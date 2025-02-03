@@ -1,0 +1,35 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SettingBase {
+  COD_BASE      String   @id
+  Desc_Grupo    String
+  Desc_SubGrupo String
+  Name          String
+  Description   String
+  State         String
+
+  settings      Settings[] 
+
+  @@map("Setting_base") 
+}
+
+model Settings {
+  COD_BASE     String  
+  ID           String @id
+  NAME         String
+  Description  String
+  State        Boolean @default(true)
+
+  settingBase  SettingBase @relation(fields: [COD_BASE], references: [COD_BASE]) 
+
+  @@map("settings") 
+}
