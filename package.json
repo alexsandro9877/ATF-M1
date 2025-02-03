@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx tsx watch src/server.ts",
-    "vercel-build": "npx prisma generate"
+    "vercel-build": "npx prisma generate && prisma migrate dev && prisma db seed && npx tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",
