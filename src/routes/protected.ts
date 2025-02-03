@@ -21,7 +21,7 @@ export async function protectedRoutes(app: FastifyInstance) {
             <title>Automatfull</title>
             <meta
             name="description"
-            content="Aplicação ATF-BACK-API"
+            content="Aplicação ATF-M1"
             />
         </head>
         <body>

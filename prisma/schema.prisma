@@ -1,4 +1,8 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -10,26 +14,27 @@ datasource db {
 }
 
 model SettingBase {
-  COD_BASE      String   @id
-  Desc_Grupo    String
-  Desc_SubGrupo String
-  Name          String
-  Description   String
-  State         String
-
+  cod_base       Int @id @default(autoincrement())
+  desc_grupo    String
+  desc_subgrupo String
+  name          String
+  description   String
+  state         String? @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   settings      Settings[] 
-
-  @@map("Setting_base") 
+  @@map("setting_base") 
 }
 
 model Settings {
-  COD_BASE     String  
-  ID           String @id
-  NAME         String
-  Description  String
-  State        Boolean @default(true)
-
-  settingBase  SettingBase @relation(fields: [COD_BASE], references: [COD_BASE]) 
+  cod_base     Int  
+  id           Int @id
+  name         String
+  description  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  state        Boolean @default(true)
+  settingBase  SettingBase @relation(fields: [cod_base], references: [cod_base]) 
 
   @@map("settings") 
 }

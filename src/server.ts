@@ -23,22 +23,22 @@ const start = async () => {
         await app.register(cors);
         await app.register(fastifyCookie);
         await app.register(fastifyMultipart);
-        await app.register(fastifyJwt, {
-            secret: process.env.JWT_SECRET!,
-        });
+        // await app.register(fastifyJwt, {
+        //     secret: process.env.JWT_SECRET!,
+        // });
 
         app.register(routes);
 
        // Middleware de autenticação para proteger rotas
-        app.addHook('onRequest', async (request, reply) => {
-            if (request.routerPath !== '/login' && request.routerPath !== '/refresh') {
-                try {
-                    await request.jwtVerify();
-                } catch (err) {
-                    reply.send(err);
-                }
-            }
-        });
+        // app.addHook('onRequest', async (request, reply) => {
+        //     if (request.routerPath !== '/login' && request.routerPath !== '/refresh') {
+        //         try {
+        //             await request.jwtVerify();
+        //         } catch (err) {
+        //             reply.send(err);
+        //         }
+        //     }
+        // });
         
 
         await app.listen({ port, host: '0.0.0.0' });
