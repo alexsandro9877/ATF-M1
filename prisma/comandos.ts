@@ -10,6 +10,8 @@
 // ---Apos criar ver as tabelas no banco, executar o sofware DBeaver que ja instalei.
 // ---Entao conexao com o banco que criou Postgres
 
+// "dev": "npx tsx watch src/server.ts",
+// "vercel-build": "prisma generate && prisma migrate dev && prisma db seed"
 
 
 //npm install @vercel/node --save-dev
