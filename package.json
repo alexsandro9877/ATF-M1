@@ -2,7 +2,6 @@
   "name": "M1",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "scripts": {
     "dev": "npx tsx watch src/server.ts",
     "vercel-build": "npx prisma generate"
