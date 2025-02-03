@@ -8,6 +8,6 @@ services:
       - 5432:5432
   
     environment:
-      POSTGRES_DB: atf
+      POSTGRES_DB: atfm1
 
       POSTGRES_HOST_AUTH_METHOD: trust
