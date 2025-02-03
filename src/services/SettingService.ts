@@ -1,23 +1,20 @@
-import  prismaClient  from '../../prisma/prisma';
+import { PrismaClient } from '@prisma/client';
 import { ISettingBaseProps } from '../types/types';
 
-
+const prismaClient = new PrismaClient();
 class ListSettingService {
     async execute() {
-        try {
-            const settings = await prismaClient.settingBase.findMany({
-                include: {
-                     settings: true                }
-            });
-
-            if (settings.length === 0) {
-                return ({ message: "Sem configurações criadas" });
+                try {
+                    const settings = await prismaClient.settingBase.findMany();
+        
+                    if (settings.length === 0) {
+                        return ({ message: "Sem contas cadastradas" });
+                    }
+                    return settings;
+                } catch (error) {
+                    throw new Error("Erro ao listar as contas: " + error);
+                }
             }
-            return settings;
-        } catch (error) {
-            throw new Error("Erro ao listar as configurações: " + error);
-        }
-    }
 }
 class GetSettingByIdService {
     async execute(id : number) {

@@ -27,9 +27,10 @@ export async function protectedRoutes(app: FastifyInstance) {
   app.post(
     "/settings",
     async (request: FastifyRequest, reply: FastifyReply) => {
-      return new ListSettingsController().handle(request, reply);
+      return new CreateSettingController().handle(request, reply);
     }
   );
+
   /// Rota retorna a tela de apresentação da api
   app.get("/", async (req, reply) => {
     return reply.status(200).type("text/html").send(html);

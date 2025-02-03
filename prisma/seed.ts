@@ -1,29 +1,30 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-async function main() {
 
+async function main() {
   const codBase = await prisma.settingBase.upsert({
-    where: { cod_base: 1},
+    where: { cod_base: 1 },
     update: {},
     create: {
-        desc_grupo:"Configuração",
-        desc_subgrupo:"Base",
-        description:"Configuração de tipos de armazenagem",
-        name:"PUTAWAY_TYPE",
-        state:"",
-        settings:{
-            create:{
-                description: "Locais de picking",
-                name:"PICKING",
-                id:1,
-            }
+      desc_grupo: "Configuração",
+      desc_subgrupo: "Base",
+      description: "Configuração de tipos de armazenagem",
+      name: "PUTAWAY_TYPE",
+      state: "",
+      settings: {
+        create: {
+          description: "Locais de picking",
+          name: "PICKING",
+          id: 1
+          // Não é necessário passar cod_base aqui
         }
-
-
+      }
     },
   })
+
   console.log(codBase)
 }
+
 main()
   .then(async () => {
     await prisma.$disconnect()
