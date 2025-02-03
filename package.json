@@ -16,6 +16,7 @@
     "@types/node": "^20.17.16",
     "@types/nodemailer": "^6.4.15",
     "@types/qrcode-terminal": "^0.12.2",
+    "@vercel/node": "^5.1.0",
     "fastify-print-routes": "^3.2.0",
     "prisma": "^6.3.0",
     "ts-node": "^10.9.2",

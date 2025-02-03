@@ -12,7 +12,7 @@
 
 
 
-
+//npm install @vercel/node --save-dev
 // --- criar o seed
 // incluir no package.json
 // "prisma": {
