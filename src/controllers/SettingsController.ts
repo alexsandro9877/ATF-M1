@@ -3,7 +3,8 @@ import{
     ListSettingService,
     GetSettingByIdService,
     DeleteSettingsService,
-    CreateSettingService} from '../services/SettingService';
+    CreateUpdateSettingService,
+    DeleteSettingsDetailService} from '../services/SettingService';
 import { ISettingBaseProps } from "../types/types";
 
 
@@ -41,10 +42,26 @@ class DeleteSettingsController {
   
     async handle(request: FastifyRequest, reply: FastifyReply) {
         const deleteSettingsService = new DeleteSettingsService();
-        const { id } = request.params as { id: number };
+        const { id } = request.params as { id: string };
 
         try {
-            const settings = await deleteSettingsService.execute(id);
+            const settings = await deleteSettingsService.execute(parseInt(id));
+            reply.send(settings);
+        } catch (error) {
+            //@ts-ignore
+            reply.status(500).send({ message: error.message });
+        }
+    }
+}
+
+class DeleteSettingsDetailController {
+  
+    async handle(request: FastifyRequest, reply: FastifyReply) {
+        const deleteSettingsDetailService = new DeleteSettingsDetailService();
+        const { id } = request.params as { id: string };
+
+        try {
+            const settings = await deleteSettingsDetailService.execute(parseInt(id));
             reply.send(settings);
         } catch (error) {
             //@ts-ignore
@@ -55,11 +72,11 @@ class DeleteSettingsController {
 
 class CreateSettingController {
     async handle(request: FastifyRequest, reply: FastifyReply) {
-        const createSettingService = new CreateSettingService();
-        const objComplet = request.body as ISettingBaseProps
-
+        const createSettingService = new CreateUpdateSettingService();
+        const objRecebido = request.body as ISettingBaseProps;
         try {
-            const setting = await createSettingService.execute({...objComplet });
+            const setting = await createSettingService.execute(objRecebido as ISettingBaseProps);
+            
             reply.send(setting);
         } catch (error) {
             //@ts-ignore
@@ -71,4 +88,5 @@ class CreateSettingController {
 export{ ListSettingsController,
     GetSettingByIdController,
     DeleteSettingsController,
-    CreateSettingController}
+    CreateSettingController,
+    DeleteSettingsDetailController}

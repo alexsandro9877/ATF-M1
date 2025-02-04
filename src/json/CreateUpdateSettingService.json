@@ -1,0 +1,32 @@
+[
+    {
+        "cod_base": 7, // Se nao mandar ele cria-- se mandar ele atualiza
+        "desc_grupo": "Configuração",
+        "desc_subgrupo": "Base",
+        "name": "PUTAWAY - 7",
+        "description": "Configuração de tipos de armazenagem",
+        "state": "",
+        "createdAt": "2025-02-03T20:17:24.330Z",
+        "updatedAt": "2025-02-03T20:17:24.330Z",
+        "settings": [
+            {
+               // "cod_base": 1,// Se nao mandar ele cria-- se mandar ele atualiza
+                "id": 7,
+                "name": "PICKING - A",
+                "description": "Locais de picking",
+                "createdAt": "2025-02-03T20:17:24.330Z",
+                "updatedAt": "2025-02-03T20:17:24.330Z",
+                "state": true
+            },
+             {
+               // "cod_base": 1,// Se nao mandar ele cria-- se mandar ele atualiza
+                "id": 46,
+                "name": "PICKING - AB",
+                "description": "Locais de picking",
+                "createdAt": "2025-02-03T20:17:24.330Z",
+                "updatedAt": "2025-02-03T20:17:24.330Z",
+                "state": true
+            }
+        ]
+    }
+]

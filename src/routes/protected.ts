@@ -3,7 +3,8 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import {  ListSettingsController,
   GetSettingByIdController,
   DeleteSettingsController,
-  CreateSettingController } from "../controllers/SettingsController";
+  CreateSettingController, 
+  DeleteSettingsDetailController} from "../controllers/SettingsController";
 
 export async function protectedRoutes(app: FastifyInstance) {
   app.get(
@@ -22,6 +23,12 @@ export async function protectedRoutes(app: FastifyInstance) {
     "/settings/:id",
     async (request: FastifyRequest, reply: FastifyReply) => {
       return new DeleteSettingsController().handle(request, reply);
+    }
+  );
+  app.delete(
+    "/settings/detail/:id",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      return new DeleteSettingsDetailController().handle(request, reply);
     }
   );
   app.post(

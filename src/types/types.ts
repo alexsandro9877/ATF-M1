@@ -7,7 +7,7 @@ export type ISettingBaseProps = {
     state: string | null;  
     createdAt: Date;
     updatedAt: Date;
-    settings: ISettingsProps[]; 
+    settings?: ISettingsProps[]; 
   };
   
   export type ISettingsProps = {
