@@ -22,3 +22,4 @@
 //   },
 //   se precisard  "build": "tsc -b && vite build",
 // --- npx prisma db seed
+// npx prisma studio

@@ -85,8 +85,10 @@ class CreateSettingController {
     }
 }
 
-export{ ListSettingsController,
+export{ 
+    ListSettingsController,
     GetSettingByIdController,
     DeleteSettingsController,
     CreateSettingController,
-    DeleteSettingsDetailController}
+    DeleteSettingsDetailController
+}

@@ -43,7 +43,6 @@ class GetSettingByIdService {
         }
     }
 }
-
 class DeleteSettingsService {
     async execute(id: number) {
         if (!id) {
@@ -165,75 +164,6 @@ class CreateUpdateSettingService {
         }
     }
 }
-
-
-// class EditAccountsService {
-//     async execute({ id, name, aplication, routes, customerId }: EditAccountsProps) {
-//         if (!id || !name || !aplication || !routes || !customerId) {
-//             throw new Error("Por favor, forneça todos os campos necessários.");
-//         }
-
-//         try {
-//             const existingAccount = await prisma.account.findUnique({
-//                 where: { id }
-//             });
-
-//             if (!existingAccount) {
-//                 throw new Error(`Conta com ID ${id} não encontrada.`);
-//             }
-
-//             if (existingAccount.customerId !== customerId) {
-//                 throw new Error("O customerId fornecido não corresponde ao customerId existente.");
-//             }
-
-//             const accountUpdate = {
-//                 name,
-//                 aplication,
-//                 routes,
-//                 customerId,
-//                 updated_at: new Date(),
-                
-//             };
-
-//             const updatedAccount = await prisma.account.update({
-//                 where: { id },
-//                 data: accountUpdate,
-//                 include:{
-//                     customer:true
-//                 }
-                
-//             });
-
-//             return updatedAccount;
-//         } catch (error) {
-//             throw new Error(`Erro ao editar a conta: ${error}`);
-//         }
-//     }
-// }
-
-// class GetAccountByCustomerIdService {
-//     async execute(id: string) {
-//         if (!id) {
-//             throw new Error("ID não fornecido.");
-//         }
-
-//         try {
-//             const account = await prisma.account.findMany({
-//                 where: {
-//                     customerId: id
-//                 }
-//             });
-
-//             if (!account) {
-//                 throw new Error("Conta não encontrada para o ID fornecido.");
-//             }
-
-//             return account;
-//         } catch (error) {
-//             throw new Error(`${error}`);
-//         }
-//     }
-// }
 
 export{
     ListSettingService,
