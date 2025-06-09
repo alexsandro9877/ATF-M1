@@ -12,7 +12,7 @@ const port = parseInt(process.env.PORT || '3000', 10);
 
 const app = fastify({ 
     logger: true,
-    bodyLimit: 1048576, // Limite de 1MB (por exemplo)
+    bodyLimit: 1048576, // Limite de 1MB
     pluginTimeout: 120000, // 2 minutos de timeout para plugins
 
 });
