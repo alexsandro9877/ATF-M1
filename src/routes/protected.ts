@@ -20,13 +20,7 @@ app.get('/api/auth/mercadolivre/callback', async (req, reply) => {
   params.append('client_secret', client_secret);
   params.append('redirect_uri', redirect_uri);
 
-        //  grant_type: 'refresh_token',
-        // client_id: 7529607344474925,
-        // client_secret: 'Pa75wlcw3zEeeq4gZKALu2pt2Uelbk70',
-        // // code: 'TG-65d1ecd07ca75800014da924-1324362670',
-        // redirect_uri: 'https://localhost.com',
-        // code_verifier: '',
-        // refresh_token: 'TG-67b39f5e6dc6dc00018ed464-1324362670'
+    
   try {
     const response = await axios.post(
       'https://api.mercadolibre.com/oauth/token',
