@@ -1,6 +1,6 @@
 // src/routes/routes.ts
 import { FastifyInstance } from 'fastify';
-// import { authRoutes } from '../routes/auth';
+
 import { protectedRoutes } from '../routes/protected';
 
 export async function routes(app: FastifyInstance) {
@@ -9,4 +9,5 @@ export async function routes(app: FastifyInstance) {
   
   // Rotas protegidas
   app.register(protectedRoutes);
+  
 }
