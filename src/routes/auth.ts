@@ -1,6 +1,13 @@
 // import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 // // import { GetUserByEmailService } from '../services/UsersService';
 // import fastifyJwt from '@fastify/jwt';
+// Exemplo: /auth/mercadolivre
+//@ts-ignore
+const redirectUri = encodeURIComponent(process.env.ML_REDIRECT_URI);
+const clientId = process.env.ML_CLIENT_ID;
+
+const authUrl = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+
 
 // export async function authRoutes(app: FastifyInstance) {
 //     app.post('/login', async (request: FastifyRequest, reply: FastifyReply) => {

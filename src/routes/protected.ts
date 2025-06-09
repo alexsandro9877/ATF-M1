@@ -5,8 +5,82 @@ import {  ListSettingsController,
   DeleteSettingsController,
   CreateSettingController, 
   DeleteSettingsDetailController} from "../controllers/SettingsController";
+import axios from "axios";
 
 export async function protectedRoutes(app: FastifyInstance) {
+
+app.get('/api/auth/mercadolivre/callback', async (req, reply) => {
+  const client_id = process.env.ML_CLIENT_ID!;
+  const client_secret = process.env.ML_CLIENT_SECRET!;
+  const redirect_uri = process.env.ML_REDIRECT_URI!;
+
+  const params = new URLSearchParams();
+  params.append('grant_type', 'refresh_token');
+  params.append('client_id', client_id);
+  params.append('client_secret', client_secret);
+  params.append('redirect_uri', redirect_uri);
+
+        //  grant_type: 'refresh_token',
+        // client_id: 7529607344474925,
+        // client_secret: 'Pa75wlcw3zEeeq4gZKALu2pt2Uelbk70',
+        // // code: 'TG-65d1ecd07ca75800014da924-1324362670',
+        // redirect_uri: 'https://localhost.com',
+        // code_verifier: '',
+        // refresh_token: 'TG-67b39f5e6dc6dc00018ed464-1324362670'
+  try {
+    const response = await axios.post(
+      'https://api.mercadolibre.com/oauth/token',
+      params.toString(),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+
+    return reply.send(response.data);
+  } catch (error: any) {
+    console.error(error.response?.data || error.message);
+    return reply.status(400).send({ error: error.response?.data || error.message });
+  }
+});
+//    app.get(
+//     "/api/auth/mercadolivre/callback",
+//     async (request: FastifyRequest, reply: FastifyReply) => {
+
+//       const { code } = request.query as { code: string };
+//   const client_id = process.env.ML_CLIENT_ID!;
+//   const client_secret = process.env.ML_CLIENT_SECRET!;
+//   const redirect_uri = process.env.ML_REDIRECT_URI!;
+
+//   const response = await axios.post('https://api.mercadolibre.com/oauth/token', {
+//     grant_type: 'authorization_code',
+//     client_id,
+//     client_secret,
+//     code,
+//     redirect_uri,
+//   }, {
+//     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//   });
+
+//   const { access_token, refresh_token, expires_in, user_id } = response.data;
+
+//   // Salve em banco ou envie como resposta
+//   return reply.send({ access_token, refresh_token, expires_in, user_id });
+//     }
+//   );
+//  app.get(
+//     "/api/auth/mercadolivre/login",
+//     async (request: FastifyRequest, reply: FastifyReply) => {
+
+//       const redirect_uri = process.env.ML_REDIRECT_URI!;
+//   const client_id = process.env.ML_CLIENT_ID!;
+//   const url = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
+// reply.redirect(url);
+      
+//     }
+//   );
+
   app.get(
     "/settings/all",
     async (request: FastifyRequest, reply: FastifyReply) => {

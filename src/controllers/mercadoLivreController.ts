@@ -1,4 +1,4 @@
-
+// src/controllers/mercadoLivreController.ts
 import axios from "axios";
 
 export const mercadoLivreCallback = async (req, reply) => {
@@ -7,10 +7,10 @@ export const mercadoLivreCallback = async (req, reply) => {
   try {
     const response = await axios.post("https://api.mercadolibre.com/oauth/token", {
       grant_type: "authorization_code",
-      client_id: 2668378137203164,
-      client_secret: 'Lw83l8ka6WlWytrkqo3PQYNXjImzc6cG',
+      client_id: process.env.ML_CLIENT_ID,
+      client_secret: process.env.ML_CLIENT_SECRET,
       code,
-      redirect_uri: 'https://atf-m1.vercel.app/auth/mercadolivre/callback',
+      redirect_uri: process.env.ML_REDIRECT_URI,
     }, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
