@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "npx tsx watch src/server.ts",
-    "vercel-build": ""
+    "vercel-build": "npx tsx watch src/server.ts"
     
   },
   "keywords": [],
