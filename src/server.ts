@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import { routes } from '../src/routes/routes';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyJwt from '@fastify/jwt';
-import '../src/tasks/tokenRefreshTask.ts'
+// import '../src/tasks/tokenRefreshTask.ts'
 
 dotenv.config();
 const port = parseInt(process.env.PORT || '3000', 10); 
