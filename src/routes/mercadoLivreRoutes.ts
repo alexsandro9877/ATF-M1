@@ -1,10 +1,15 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { mercadoLivreCallback } from "../controllers/mercadoLivreController";
+import {
+  mercadoLivreCallback,
+  mercadolibreResToken,
+  mercadolibreResCache,
+} from "../controllers/mercadoLivreController";
+
 import axios from "axios";
 
 export async function mercadoLivreRoutes(app: FastifyInstance) {
   app.get("/auth/mercadolivre/callback", mercadoLivreCallback);
-  
+
   app.get("/api/auth/mercadolivre/callback", async (req, reply) => {
     const client_id = process.env.ML_CLIENT_ID!;
     const client_secret = process.env.ML_CLIENT_SECRET!;
@@ -35,11 +40,25 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
         .send({ error: error.response?.data || error.message });
     }
   });
-  app.get("/api/auth/mercadolivre/login",async function (request: FastifyRequest, reply: FastifyReply) {
+  app.get(
+    "/api/auth/mercadolivre/login",
+    async function (request: FastifyRequest, reply: FastifyReply) {
       const redirect_uri = process.env.ML_REDIRECT_URI!;
       const client_id = process.env.ML_CLIENT_ID!;
       const url = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
       reply.redirect(url);
+    }
+  );
+  app.get(
+    "/auth/user",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      return new mercadolibreResToken().handle(request, reply);
+    }
+  );
+   app.get(
+    "/auth/cache",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      return new mercadolibreResCache().handle(request, reply);
     }
   );
 }
