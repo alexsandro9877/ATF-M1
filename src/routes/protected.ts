@@ -7,10 +7,8 @@ import {
   CreateSettingController,
   DeleteSettingsDetailController,
 } from "../controllers/SettingsController";
-import axios from "axios";
 
 export async function protectedRoutes(app: FastifyInstance) {
-
   app.get(
     "/settings/all",
     async (request: FastifyRequest, reply: FastifyReply) => {

@@ -8,6 +8,5 @@ export async function routes(app: FastifyInstance) {
   // app.register(authRoutes);
   // Rotas protegidas
   app.register(protectedRoutes);
-  app.register(mercadoLivreRoutes)
-  
+  app.register(mercadoLivreRoutes);  
 }
