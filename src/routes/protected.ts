@@ -1,14 +1,5 @@
-//protectd.ts
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-// import {
-//   ListSettingsController,
-//   GetSettingByIdController,
-//   DeleteSettingsController,
-//   CreateSettingController,
-//   DeleteSettingsDetailController,
-// } from "../controllers/SettingsController";
 
-export async function protectedRoutes(app: FastifyInstance) {
+
   // app.get(
   //   "/settings/all",
   //   async (request: FastifyRequest, reply: FastifyReply) => {
@@ -40,6 +31,11 @@ export async function protectedRoutes(app: FastifyInstance) {
   //   }
   // );
 
+//protectd.ts
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+
+export async function protectedRoutes(app: FastifyInstance) {
+ 
   /// Rota retorna a tela de apresentação da api
   app.get("/", async (req, reply) => {
     return reply.status(200).type("text/html").send(html);
@@ -51,6 +47,10 @@ export async function protectedRoutes(app: FastifyInstance) {
         <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
+            />
             <title>Automatfull</title>
             <meta
             name="description"

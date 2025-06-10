@@ -2,11 +2,9 @@ import fastify from 'fastify';
 import cors from '@fastify/cors';
 import fastifyCookie from '@fastify/cookie';
 import dotenv from 'dotenv';
-import { routes } from './routes/routes.js';
+import { routes } from '../src/routes/routes';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyJwt from '@fastify/jwt';
-// import '../src/tasks/tokenRefreshTask.ts'
-
 
 dotenv.config();
 const port = parseInt(process.env.PORT || '3000', 10); 
@@ -14,7 +12,7 @@ const port = parseInt(process.env.PORT || '3000', 10);
 
 const app = fastify({ 
     logger: true,
-    bodyLimit: 1048576, // Limite de 1MB
+    bodyLimit: 1048576, // Limite de 1MB (por exemplo)
     pluginTimeout: 120000, // 2 minutos de timeout para plugins
 
 });
