@@ -1,44 +1,44 @@
 //protectd.ts
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import {
-  ListSettingsController,
-  GetSettingByIdController,
-  DeleteSettingsController,
-  CreateSettingController,
-  DeleteSettingsDetailController,
-} from "../controllers/SettingsController";
+// import {
+//   ListSettingsController,
+//   GetSettingByIdController,
+//   DeleteSettingsController,
+//   CreateSettingController,
+//   DeleteSettingsDetailController,
+// } from "../controllers/SettingsController";
 
 export async function protectedRoutes(app: FastifyInstance) {
-  app.get(
-    "/settings/all",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      return new ListSettingsController().handle(request, reply);
-    }
-  );
-  app.get(
-    "/settings/:id",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      return new GetSettingByIdController().handle(request, reply);
-    }
-  );
-  app.delete(
-    "/settings/:id",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      return new DeleteSettingsController().handle(request, reply);
-    }
-  );
-  app.delete(
-    "/settings/detail/:id",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      return new DeleteSettingsDetailController().handle(request, reply);
-    }
-  );
-  app.post(
-    "/settings",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      return new CreateSettingController().handle(request, reply);
-    }
-  );
+  // app.get(
+  //   "/settings/all",
+  //   async (request: FastifyRequest, reply: FastifyReply) => {
+  //     return new ListSettingsController().handle(request, reply);
+  //   }
+  // );
+  // app.get(
+  //   "/settings/:id",
+  //   async (request: FastifyRequest, reply: FastifyReply) => {
+  //     return new GetSettingByIdController().handle(request, reply);
+  //   }
+  // );
+  // app.delete(
+  //   "/settings/:id",
+  //   async (request: FastifyRequest, reply: FastifyReply) => {
+  //     return new DeleteSettingsController().handle(request, reply);
+  //   }
+  // );
+  // app.delete(
+  //   "/settings/detail/:id",
+  //   async (request: FastifyRequest, reply: FastifyReply) => {
+  //     return new DeleteSettingsDetailController().handle(request, reply);
+  //   }
+  // );
+  // app.post(
+  //   "/settings",
+  //   async (request: FastifyRequest, reply: FastifyReply) => {
+  //     return new CreateSettingController().handle(request, reply);
+  //   }
+  // );
 
   /// Rota retorna a tela de apresentação da api
   app.get("/", async (req, reply) => {
