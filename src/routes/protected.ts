@@ -1,79 +1,15 @@
 //protectd.ts
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import {  ListSettingsController,
+import {
+  ListSettingsController,
   GetSettingByIdController,
   DeleteSettingsController,
-  CreateSettingController, 
-  DeleteSettingsDetailController} from "../controllers/SettingsController";
+  CreateSettingController,
+  DeleteSettingsDetailController,
+} from "../controllers/SettingsController";
 import axios from "axios";
 
 export async function protectedRoutes(app: FastifyInstance) {
-
-app.get('/api/auth/mercadolivre/callback', async (req, reply) => {
-  const client_id = process.env.ML_CLIENT_ID!;
-  const client_secret = process.env.ML_CLIENT_SECRET!;
-  const redirect_uri = process.env.ML_REDIRECT_URI!;
-
-  const params = new URLSearchParams();
-  params.append('grant_type', 'refresh_token');
-  params.append('client_id', client_id);
-  params.append('client_secret', client_secret);
-  params.append('redirect_uri', redirect_uri);
-
-    
-  try {
-    const response = await axios.post(
-      'https://api.mercadolibre.com/oauth/token',
-      params.toString(),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      }
-    );
-
-    return reply.send(response.data);
-  } catch (error: any) {
-    console.error(error.response?.data || error.message);
-    return reply.status(400).send({ error: error.response?.data || error.message });
-  }
-});
-//    app.get(
-//     "/api/auth/mercadolivre/callback",
-//     async (request: FastifyRequest, reply: FastifyReply) => {
-
-//       const { code } = request.query as { code: string };
-//   const client_id = process.env.ML_CLIENT_ID!;
-//   const client_secret = process.env.ML_CLIENT_SECRET!;
-//   const redirect_uri = process.env.ML_REDIRECT_URI!;
-
-//   const response = await axios.post('https://api.mercadolibre.com/oauth/token', {
-//     grant_type: 'authorization_code',
-//     client_id,
-//     client_secret,
-//     code,
-//     redirect_uri,
-//   }, {
-//     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-//   });
-
-//   const { access_token, refresh_token, expires_in, user_id } = response.data;
-
-//   // Salve em banco ou envie como resposta
-//   return reply.send({ access_token, refresh_token, expires_in, user_id });
-//     }
-//   );
-//  app.get(
-//     "/api/auth/mercadolivre/login",
-//     async (request: FastifyRequest, reply: FastifyReply) => {
-
-//       const redirect_uri = process.env.ML_REDIRECT_URI!;
-//   const client_id = process.env.ML_CLIENT_ID!;
-//   const url = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
-// reply.redirect(url);
-      
-//     }
-//   );
 
   app.get(
     "/settings/all",
@@ -105,7 +41,6 @@ app.get('/api/auth/mercadolivre/callback', async (req, reply) => {
       return new CreateSettingController().handle(request, reply);
     }
   );
-
 
   /// Rota retorna a tela de apresentação da api
   app.get("/", async (req, reply) => {

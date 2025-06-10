@@ -1,13 +1,13 @@
 // src/routes/routes.ts
 import { FastifyInstance } from 'fastify';
-
 import { protectedRoutes } from '../routes/protected';
+import { mercadoLivreRoutes } from './mercadoLivreRoutes';
 
 export async function routes(app: FastifyInstance) {
   // Rota de proteção para gerar token
   // app.register(authRoutes);
-  
   // Rotas protegidas
   app.register(protectedRoutes);
+  app.register(mercadoLivreRoutes)
   
 }
