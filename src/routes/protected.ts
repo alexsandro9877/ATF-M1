@@ -5,6 +5,36 @@ import {  ListSettingsController,
   DeleteSettingsController,
   CreateSettingController, 
   DeleteSettingsDetailController} from "../controllers/SettingsController";
+<<<<<<< HEAD
+  import {FinalizadoraController,getAllFinalizadorasController,getByIdFinalizadorasController,deleteByIdFinalizadorasController} from "../controllers/SettingsFinalizadoraController";
+
+export async function protectedRoutes(app: FastifyInstance) {
+  app.post(
+    "/finalizadora",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      return new FinalizadoraController().handle(request, reply);
+    }
+  );
+  app.get(
+    "/finalizadora/all",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      return new getAllFinalizadorasController().handle(request, reply);
+    }
+  );
+   app.get(
+    "/finalizadora/:id",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      return new getByIdFinalizadorasController().handle(request, reply);
+    }
+  );
+   app.delete(
+    "/finalizadora/:id",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      return new deleteByIdFinalizadorasController().handle(request, reply);
+    }
+  );
+  
+=======
 import axios from "axios";
 
 export async function protectedRoutes(app: FastifyInstance) {
@@ -75,6 +105,7 @@ app.get('/api/auth/mercadolivre/callback', async (req, reply) => {
 //     }
 //   );
 
+>>>>>>> 1cac3a87f4ee33307694e064038e1f2c17e0213d
   app.get(
     "/settings/all",
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -105,6 +136,7 @@ app.get('/api/auth/mercadolivre/callback', async (req, reply) => {
       return new CreateSettingController().handle(request, reply);
     }
   );
+
 
   /// Rota retorna a tela de apresentação da api
   app.get("/", async (req, reply) => {
