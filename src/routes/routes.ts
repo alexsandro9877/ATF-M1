@@ -1,6 +1,6 @@
 // src/routes/routes.ts
 import { FastifyInstance } from 'fastify';
-import { protectedRoutes } from '../routes/protected';
+import { protectedRoutes } from './protected';
 import { mercadoLivreRoutes } from './mercadoLivreRoutes';
 
 export async function routes(app: FastifyInstance) {
