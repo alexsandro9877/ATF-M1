@@ -38,6 +38,4 @@ export async function buscarProdutoDoML() {
 
 // Se quiser testar diretamente o script
 // Remova se for usar apenas como módulo
-if (import.meta.url === `file://${process.argv[1]}`) {
-  buscarProdutoDoML().then(console.log).catch(console.error);
-}
+
