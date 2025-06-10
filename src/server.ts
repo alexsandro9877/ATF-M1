@@ -2,11 +2,11 @@ import fastify from 'fastify';
 import cors from '@fastify/cors';
 import fastifyCookie from '@fastify/cookie';
 import dotenv from 'dotenv';
-import { routes } from './routes/routes';
+import { routes } from '../src/routes/routes';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyJwt from '@fastify/jwt';
-// import '../src/tasks/tokenRefreshTask.ts'
-
+// src/server.ts
+import './tasks/tokenRefreshTask'; // Isso ativa o cron
 
 dotenv.config();
 const port = parseInt(process.env.PORT || '3000', 10); 
