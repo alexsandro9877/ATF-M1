@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
- "scripts": {
-  "dev": "npx tsx watch src/server.ts",
-  "vercel-build": ""
-},
+  "scripts": {
+    "dev": "npx tsx watch src/server.ts",
+    "vercel-build": ""
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
