@@ -1,37 +1,3 @@
-
-
-  // app.get(
-  //   "/settings/all",
-  //   async (request: FastifyRequest, reply: FastifyReply) => {
-  //     return new ListSettingsController().handle(request, reply);
-  //   }
-  // );
-  // app.get(
-  //   "/settings/:id",
-  //   async (request: FastifyRequest, reply: FastifyReply) => {
-  //     return new GetSettingByIdController().handle(request, reply);
-  //   }
-  // );
-  // app.delete(
-  //   "/settings/:id",
-  //   async (request: FastifyRequest, reply: FastifyReply) => {
-  //     return new DeleteSettingsController().handle(request, reply);
-  //   }
-  // );
-  // app.delete(
-  //   "/settings/detail/:id",
-  //   async (request: FastifyRequest, reply: FastifyReply) => {
-  //     return new DeleteSettingsDetailController().handle(request, reply);
-  //   }
-  // );
-  // app.post(
-  //   "/settings",
-  //   async (request: FastifyRequest, reply: FastifyReply) => {
-  //     return new CreateSettingController().handle(request, reply);
-  //   }
-  // );
-
-//protectd.ts
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 export async function protectedRoutes(app: FastifyInstance) {
