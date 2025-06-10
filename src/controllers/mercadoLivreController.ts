@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { responseToken, responseTokenCache } from "../services/mercadoLivreService";
 
  const mercadoLivreCallback = async (req, reply) => {
-  
+  return "as";
 };
 
 class mercadolibreResToken {

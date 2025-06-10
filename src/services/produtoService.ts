@@ -1,6 +1,6 @@
 // src/services/produtoService.ts
 import axios from 'axios';
-import { getAccessToken } from '../lib/tokenCache.ts';
+import { getAccessToken } from '../lib/tokenCache.js';
 
 export async function buscarProdutoDoML(id: string) {
   const token = getAccessToken();

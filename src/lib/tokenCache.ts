@@ -12,18 +12,22 @@ export type TokenDataResponse = {
 
 let token: TokenDataResponse | null = null;
 
-export function setToken(data: TokenDataResponse) {
+ function setToken(data: TokenDataResponse) {
   token = data;
 }
 
-export function getToken(): TokenDataResponse | null {
+ function getToken(): TokenDataResponse | null {
   return token;
 }
 
-export function getAccessToken(): string | null {
+ function getAccessToken(): string | null {
   return token?.access_token || null;
 }
 
-export function getRefreshToken(): string | null {
+ function getRefreshToken(): string | null {
   return token?.refresh_token || null;
+}
+
+export{
+setToken,getToken,getAccessToken,getRefreshToken
 }
