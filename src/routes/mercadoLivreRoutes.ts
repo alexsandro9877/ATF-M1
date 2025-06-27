@@ -40,7 +40,6 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
         .send({ error: error.response?.data || error.message });
     }
   });
-
   //// para pegar o token para poder gerar o refresh token
   
   app.get(

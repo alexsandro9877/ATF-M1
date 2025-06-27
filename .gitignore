@@ -1,6 +1,10 @@
 node_modules
 .env
 .vercel
+<<<<<<< HEAD
 firebase-service-account.json
 firebase
+=======
+.firebase-service-account.json
+>>>>>>> 3be391f1ef9907b90e3bfa06f008ed12ba4375fd
 encoded.txt
