@@ -1,7 +1,28 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-
+import { authenticate } from "../hooks/authenticate";
+import { admin } from "../lib/firebase";
 export async function protectedRoutes(app: FastifyInstance) {
- 
+  app.addHook("onRequest", authenticate);
+
+  app.get("/profile", async (request, reply) => {
+    return { user: request.user }; // `request.user` vem do token Firebase
+  });
+
+  /// validando token do firebase passando o bearer
+  app.post("/api/auth/firebase", async (req, reply) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+      return reply.status(401).send({ error: "Token não fornecido" });
+    }
+    const token = authHeader.split(" ")[1];
+    try {
+      const decoded = await admin.auth().verifyIdToken(token);
+      return { email: decoded.email, uid: decoded.uid };
+    } catch (error) {
+      return reply.status(401).send({ error: "Token inválido ou expirado" });
+    }
+  });
+
   /// Rota retorna a tela de apresentação da api
   app.get("/", async (req, reply) => {
     return reply.status(200).type("text/html").send(html);
@@ -25,7 +46,7 @@ export async function protectedRoutes(app: FastifyInstance) {
         </head>
         <body>
             <h1>Criado por Automatfull</h1>
-            <h2>Apresentação da aplicação ATF-BACK-API</h2>
+            <h2>Apresentação da aplicação FAWS-M1</h2>
             <p>
             Esta é uma aplicação inicial para Vercel + Fastify. As requisições são
             reescritas de <code>/*</code> para <code>//*</code>, que são executadas
