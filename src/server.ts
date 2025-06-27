@@ -30,7 +30,7 @@ const start = async () => {
         // });
 
         app.register(routes);
-
+ 
        // Middleware de autenticação para proteger rotas
         // app.addHook('onRequest', async (request, reply) => {
         //     if (request.routerPath !== '/login' && request.routerPath !== '/refresh') {
