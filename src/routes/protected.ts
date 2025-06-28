@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { authenticate } from "../hooks/authenticate";
 import { admin } from "../lib/firebase";
 import { validate } from "node-cron";
+import nodemailer from 'nodemailer';
 import e from "express";
 export async function protectedRoutes(app: FastifyInstance) {
   app.addHook("onRequest", authenticate);
@@ -37,6 +38,7 @@ export async function protectedRoutes(app: FastifyInstance) {
     // const date = new Date(exp * 1000);
     // console.log(date.toLocaleString());
   });
+
   /// validando token do firebase passando o bearer e so para teste
   app.post("/api/auth/firebase", async (req, reply) => {
     const authHeader = req.headers.authorization;
@@ -269,6 +271,98 @@ export async function protectedRoutes(app: FastifyInstance) {
       return reply.status(500).send({ error: "Erro ao atualizar a foto do usuário" });
     }
   });
+
+  const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'fullautomatewebsolutions@gmail.com',
+    pass: 'immggxbnsarwvkgj'
+  }
+});
+
+
+// ✅ Etapa 2 – Gere uma senha de app
+// Acesse: https://myaccount.google.com/apppasswords
+// Faça login novamente, se necessário.
+// Em Selecionar app, escolha Outro (nome personalizado) e digite algo como Nodemailer.
+// Clique em Gerar.
+// Copie a senha gerada (é algo como: abcd efgh ijkl mnop) – sem espaços.
+  // Endpoint para envio de link de redefinição de senha por e-mail usando UID
+  app.post("/api/send-reset-link", async (req, reply) => {
+    const { email } = req.body as { email: string };
+    if (!email) {
+      return reply.status(400).send({ error: "E-mail é obrigatório" });
+    }
+    try {
+       const actionCodeSettings = {
+      url: "https://full-automate-site.vercel.app", // URL para onde o usuário será redirecionado após redefinir a senha
+      handleCodeInApp: true,
+    };
+
+      // Gera o link de redefinição usando o UID
+      const link = await admin.auth().generatePasswordResetLink(email, actionCodeSettings);
+      await transporter.sendMail({
+        from: 'fullautomatewebsolutions@suport.com',
+        to: email,
+        subject: 'Redefinição de Senha',
+        html: `
+          <p>Olá,</p>
+          <p>Você solicitou a redefinição da sua senha. Clique no botão abaixo:</p>
+          <p><a href="${link}" style="padding:10px 20px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">Redefinir Senha</a></p>
+          <p>Ou copie e cole este link no seu navegador:</p>
+          <p>${link}</p>
+          <br/>
+          <p>Se você não solicitou isso, ignore este e-mail.</p>
+        `
+      });
+      return reply.status(200).send({ message: 'Link de redefinição enviado com sucesso!' });
+    } catch (error: any) {
+      console.error('Erro ao enviar e-mail:', error);
+      return reply.status(500).send({
+        message: 'Erro ao gerar ou enviar o link.',
+        error: error.message,
+        code: error.code
+      });
+    }
+  });
+
+// app.post('/api/reset-password', async (req, res) => {
+//   const { email } = req.body as { email: string };
+//   if (!email)  return res.status(400).send({ error: "e-mail é obrigatório." });
+
+//   try {
+//     const emailUser = await admin.auth().getUserByEmail(email)
+//    const link = await admin
+//       .auth()
+//       .generatePasswordResetLink(email);
+//     // const link = await admin.auth().generatePasswordResetLink(emailUser.uid);
+//     console.log(link)
+//     // await transporter.sendMail({
+//     //   from: 'fullautomatewebsolutions@gmail.com',
+//     //   to: email,
+//     //   subject: 'Redefinição de Senha',
+//     //   html: `
+//     //     <p>Olá,</p>
+//     //     <p>Você solicitou a redefinição da sua senha. Clique no botão abaixo:</p>
+//     //     <p><a href="${link}" style="padding:10px 20px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">Redefinir Senha</a></p>
+//     //     <p>Ou copie e cole este link no seu navegador:</p>
+//     //     <p>${link}</p>
+//     //     <br/>
+//     //     <p>Se você não solicitou isso, ignore este e-mail.</p>
+//     //   `
+//     // });
+
+//     res.status(200).send({ message: 'Link de redefinição enviado com sucesso!' });
+//   } catch (error: any) {
+//     console.error('Erro ao enviar e-mail:', error);
+//     res.status(500).send({
+//       message: 'Erro ao gerar ou enviar o link.',
+//       error: error.message,
+//       code: error.code
+//     });
+//   }
+// });
+
 
 //   Ótima pergunta! O tenantManager no Firebase Admin SDK está relacionado ao recurso chamado Firebase Multi-Tenancy (multi-inquilino), que é útil quando você precisa gerenciar múltiplas "instâncias" independentes de autenticação dentro do mesmo projeto Firebase — como se fossem clientes separados com seus próprios usuários, regras e configurações.
 //  O que é um "tenant"?
