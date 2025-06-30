@@ -262,6 +262,7 @@ export async function protectedRoutes(app: FastifyInstance) {
   app.post("/api/update-photo", async (req, reply) => {
     const { uid, photoURL } = req.body as { uid: string; photoURL: string };
     if (!uid || !photoURL) {
+      await admin.auth().getUser(uid); 
       return reply.status(400).send({ error: "UID e photoURL são obrigatórios" });
     }
     try {
