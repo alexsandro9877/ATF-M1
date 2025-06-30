@@ -8,6 +8,13 @@ export async function protectedRoutes(app: FastifyInstance) {
   app.addHook("onRequest", authenticate);
 
   app.get("/profile", async (request, reply) => {
+      const authHeader = request.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+      return reply.status(401).send({ error: "Token não fornecido" });
+    }
+    const token = authHeader.split(" ")[1];
+    const decoded = await admin.auth().verifyIdToken(token);
+    await admin.auth().getUser(decoded.uid);
     return { user: request.user }; // `request.user` vem do token Firebase
 
     //     {
@@ -55,17 +62,17 @@ export async function protectedRoutes(app: FastifyInstance) {
       ///pegar imagem ja existente do usuario
       //  const userRecord = await admin.auth().getUser(decoded.uid);
       //   console.log(userRecord.providerData[0].photoURL);
-      await admin.auth().deleteUsers;
-      ///definindo claims role
-      await admin
-        .auth()
-        .setCustomUserClaims(decoded.uid, { role: ["user", "1"] }); // ou qualquer outro papel: 'user', 'editor', etc.
-      //definir uma imagem para o usuario
-      await admin
-        .auth()
-        .updateUser(decoded.uid, {
-          photoURL: "https://cdn-icons-png.flaticon.com/512/17/17004.png",
-        });
+      // await admin.auth().deleteUsers;
+      // ///definindo claims role
+      // await admin
+      //   .auth()
+      //   .setCustomUserClaims(decoded.uid, { role: ["user", "1"] }); // ou qualquer outro papel: 'user', 'editor', etc.
+      // //definir uma imagem para o usuario
+      // await admin
+      //   .auth()
+      //   .updateUser(decoded.uid, {
+      //     photoURL: "https://cdn-icons-png.flaticon.com/512/17/17004.png",
+      //   });
       const user = await admin.auth().getUser(decoded.uid); //Forçar o refresh do token no client: Após definir os claims, o token só será atualizado no próximo login ou se você forçar com:
 
       return { ...user };
