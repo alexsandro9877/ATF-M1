@@ -10,6 +10,8 @@ export async function publica(app: FastifyInstance) {
   app.post("/cadastro",async (request: FastifyRequest, reply: FastifyReply) => {
       return new createUserFirebase().handle(request, reply);
     });
+
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -26,6 +28,7 @@ const transporter = nodemailer.createTransport({
 // Clique em Gerar.
 // Copie a senha gerada (é algo como: abcd efgh ijkl mnop) – sem espaços.
   // Endpoint para envio de link de redefinição de senha por e-mail usando UID
+
   app.post("/api/send-reset-link", async (req, reply) => {
     const { email } = req.body as { email: string };
     if (!email) {
@@ -95,7 +98,41 @@ const transporter = nodemailer.createTransport({
     const link = await admin
       .auth()
       .generateEmailVerificationLink(email, actionCodeSettings);
-    return reply.status(200).send({ link });
+
+      /* Exemplo de imagem no e-mail (pode ser um logo ou banner) */
+      const logoUrl = "https://full-automate-site.vercel.app/assets/logo-DX0kfNEl.png"; 
+
+      await transporter.sendMail({
+        from: 'fullautomatewebsolutions@suport.com',
+        to: email,
+        subject: 'Confirmação de E-mail - Full Automate',
+        html: `
+          <div style="font-family: Arial, sans-serif; background: #f9f9f9; padding: 32px;">
+            <div style="max-width: 480px; margin: auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 32px;">
+              <div style="text-align: center; margin-bottom: 24px;">
+                <img src="${logoUrl}" alt="Full Automate" style="max-width: 120px; margin-bottom: 16px;" />
+              </div>
+              <h2 style="color: #222; text-align: center;">Confirmação de E-mail</h2>
+              <p>Olá,</p>
+              <p>Recebemos uma solicitação para confirmar o seu endereço de e-mail na plataforma <b>Full Automate</b>.</p>
+              <p>Para concluir seu cadastro e garantir a segurança da sua conta, clique no botão abaixo:</p>
+              <div style="text-align: center; margin: 24px 0;">
+                <a href="${link}" style="display: inline-block; padding: 12px 32px; background: #007bff; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
+                  Confirmar E-mail
+                </a>
+              </div>
+              <p>Ou copie e cole este link no seu navegador:</p>
+              <p style="word-break: break-all; color: #555;">${link}</p>
+              <hr style="margin: 32px 0; border: none; border-top: 1px solid #eee;">
+              <p style="font-size: 13px; color: #888;">
+                Se você não solicitou esta confirmação, apenas ignore este e-mail.<br>
+                Em caso de dúvidas, entre em contato com nosso suporte.
+              </p>
+            </div>
+          </div>
+        `
+      });
+    return reply.status(200).send({message: "Link de verificação enviado com sucesso!"});
   });
 }
 
