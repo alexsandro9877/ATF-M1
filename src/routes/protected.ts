@@ -130,21 +130,7 @@ export async function protectedRoutes(app: FastifyInstance) {
     // };
     // ➡️ Adicione o domínio: full-automate-site.vercel.app
   });
-  ///criar um endpoint que validate o emil do usuário
-  app.post("/api/validate-email", async (req, reply) => {
-    const actionCodeSettings = {
-      url: "https://full-automate-site.vercel.app",
-      handleCodeInApp: true,
-    };
-    const { email } = req.body as { email: string };
-    if (!email) {
-      return reply.status(400).send({ error: "E-mail é obrigatório" });
-    }
-    const link = await admin
-      .auth()
-      .generateEmailVerificationLink(email, actionCodeSettings);
-    return reply.status(200).send({ link });
-  });
+ 
  // criar um endpoint para trocar o email da conta do usuário
   app.post("/api/change-email", async (req, reply) => {
     const {  uid,    email } = req.body as {      email: string;      uid: string;    };

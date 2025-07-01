@@ -81,5 +81,21 @@ const transporter = nodemailer.createTransport({
     } catch (error: any) {
       return reply.status(500).send({ error: error.message || "Erro ao criar usuário" });
     }});
+
+     ///criar um endpoint que validate o emil do usuário
+  app.post("/api/validate-email", async (req, reply) => {
+    const actionCodeSettings = {
+      url: "https://full-automate-site.vercel.app",
+      handleCodeInApp: true,
+    };
+    const { email } = req.body as { email: string };
+    if (!email) {
+      return reply.status(400).send({ error: "E-mail é obrigatório" });
+    }
+    const link = await admin
+      .auth()
+      .generateEmailVerificationLink(email, actionCodeSettings);
+    return reply.status(200).send({ link });
+  });
 }
 
