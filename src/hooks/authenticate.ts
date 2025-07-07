@@ -11,7 +11,7 @@ export async function authenticate(
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return reply.status(401).send({ message: "Token ausente" });
     }
-
+    
     const idToken = authHeader.split(" ")[1];
     const decodedToken = await admin.auth().verifyIdToken(idToken);
 

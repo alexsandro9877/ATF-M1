@@ -1,32 +1,53 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import {  singInFirebase,  createUserFirebase,} from "../controllers/firebaseUser";
+import {
+  singInFirebase,
+  createUserFirebase,
+} from "../controllers/firebaseUser";
 import { admin } from "../lib/firebase";
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
+import { generateToken } from "../lib/authService";
 
 export async function publica(app: FastifyInstance) {
-  app.post("/login", async (request: FastifyRequest, reply: FastifyReply) => {
-    return new singInFirebase().handle(request, reply);
-  });
-  app.post("/cadastro",async (request: FastifyRequest, reply: FastifyReply) => {
-      return new createUserFirebase().handle(request, reply);
-    });
 
+app.post("/tokenStore", async (request, reply) => {
+  const { email, password } = request.body as { email: string; password: string };
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'fullautomatewebsolutions@gmail.com',
-    pass: 'immggxbnsarwvkgj'
+  // Aqui você valida o usuário na sua base
+  if (email === "teste@teste.com" && password === "123456") {
+    const token = generateToken({ userId: "teste", email });
+    console.log(token)
+    return reply.send({ token });
   }
+
+  return reply.status(401).send({ message: "Credenciais inválidas" });
 });
 
 
-// ✅ Etapa 2 – Gere uma senha de app
-// Acesse: https://myaccount.google.com/apppasswords
-// Faça login novamente, se necessário.
-// Em Selecionar app, escolha Outro (nome personalizado) e digite algo como Nodemailer.
-// Clique em Gerar.
-// Copie a senha gerada (é algo como: abcd efgh ijkl mnop) – sem espaços.
+  app.post("/login", async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      return new singInFirebase().handle(request, reply);
+    } catch (error: any) {
+      return reply.status(401).send({ error: "Usuário não cadastrado" });
+    }
+  });
+  app.post("/cadastro",async (request: FastifyRequest, reply: FastifyReply) => {
+      return new createUserFirebase().handle(request, reply);
+    }
+  );
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "fullautomatewebsolutions@gmail.com",
+      pass: "immggxbnsarwvkgj",
+    },
+  });
+
+  // ✅ Etapa 2 – Gere uma senha de app
+  // Acesse: https://myaccount.google.com/apppasswords
+  // Faça login novamente, se necessário.
+  // Em Selecionar app, escolha Outro (nome personalizado) e digite algo como Nodemailer.
+  // Clique em Gerar.
+  // Copie a senha gerada (é algo como: abcd efgh ijkl mnop) – sem espaços.
   // Endpoint para envio de link de redefinição de senha por e-mail usando UID
 
   app.post("/api/send-reset-link", async (req, reply) => {
@@ -35,17 +56,19 @@ const transporter = nodemailer.createTransport({
       return reply.status(400).send({ error: "E-mail é obrigatório" });
     }
     try {
-       const actionCodeSettings = {
-      url: "https://full-automate-site.vercel.app", // URL para onde o usuário será redirecionado após redefinir a senha
-      handleCodeInApp: true,
-    };
+      const actionCodeSettings = {
+        url: "https://full-automate-site.vercel.app", // URL para onde o usuário será redirecionado após redefinir a senha
+        handleCodeInApp: true,
+      };
 
       // Gera o link de redefinição usando o UID
-      const link = await admin.auth().generatePasswordResetLink(email, actionCodeSettings);
+      const link = await admin
+        .auth()
+        .generatePasswordResetLink(email, actionCodeSettings);
       await transporter.sendMail({
-        from: 'fullautomatewebsolutions@suport.com',
+        from: "fullautomatewebsolutions@suport.com",
         to: email,
-        subject: 'Redefinição de Senha',
+        subject: "Redefinição de Senha",
         html: `
           <p>Olá,</p>
           <p>Você solicitou a redefinição da sua senha. Clique no botão abaixo:</p>
@@ -54,38 +77,49 @@ const transporter = nodemailer.createTransport({
           <p>${link}</p>
           <br/>
           <p>Se você não solicitou isso, ignore este e-mail.</p>
-        `
+        `,
       });
-      return reply.status(200).send({ message: 'Link de redefinição enviado com sucesso!' });
+      return reply
+        .status(200)
+        .send({ message: "Link de redefinição enviado com sucesso!" });
     } catch (error: any) {
-      console.error('Erro ao enviar e-mail:', error);
+      console.error("Erro ao enviar e-mail:", error);
       return reply.status(500).send({
-        message: 'Erro ao gerar ou enviar o link.',
+        message: "Erro ao gerar ou enviar o link.",
         error: error.message,
-        code: error.code
+        code: error.code,
       });
     }
   });
 
-   //criar um endpoint para criar um usuário
+  //criar um endpoint para criar um usuário
   app.post("/api/create-user", async (req, reply) => {
     const { email, password } = req.body as { email: string; password: string };
-    if (!email || !password) {      
-      return reply.status(400).send({ error: "E-mail e senha são obrigatórios" });
+    if (!email || !password) {
+      return reply
+        .status(400)
+        .send({ error: "E-mail e senha são obrigatórios" });
     }
     try {
       const userRecord = await admin.auth().createUser({
-      email,
-      password,
+        email,
+        password,
       });
       // Definir claims padrão (exemplo: role user)
-      await admin.auth().setCustomUserClaims(userRecord.uid, { role: ["user"] });
-      return reply.status(201).send({ message: "Usuário criado com sucesso", uid: userRecord.uid });
+      await admin
+        .auth()
+        .setCustomUserClaims(userRecord.uid, { role: ["user"] });
+      return reply
+        .status(201)
+        .send({ message: "Usuário criado com sucesso", uid: userRecord.uid });
     } catch (error: any) {
-      return reply.status(500).send({ error: error.message || "Erro ao criar usuário" });
-    }});
+      return reply
+        .status(500)
+        .send({ error: error.message || "Erro ao criar usuário" });
+    }
+  });
 
-     ///criar um endpoint que validate o emil do usuário
+  ///criar um endpoint que validate o emil do usuário
   app.post("/api/validate-email", async (req, reply) => {
     const actionCodeSettings = {
       url: "https://full-automate-site.vercel.app",
@@ -99,14 +133,15 @@ const transporter = nodemailer.createTransport({
       .auth()
       .generateEmailVerificationLink(email, actionCodeSettings);
 
-      /* Exemplo de imagem no e-mail (pode ser um logo ou banner) */
-      const logoUrl = "https://full-automate-site.vercel.app/assets/logo-DX0kfNEl.png"; 
+    /* Exemplo de imagem no e-mail (pode ser um logo ou banner) */
+    const logoUrl =
+      "https://full-automate-site.vercel.app/assets/logo-DX0kfNEl.png";
 
-      await transporter.sendMail({
-        from: 'fullautomatewebsolutions@suport.com',
-        to: email,
-        subject: 'Confirmação de E-mail - Full Automate',
-        html: `
+    await transporter.sendMail({
+      from: "fullautomatewebsolutions@suport.com",
+      to: email,
+      subject: "Confirmação de E-mail - Full Automate",
+      html: `
           <div style="font-family: Arial, sans-serif; background: #f9f9f9; padding: 32px;">
             <div style="max-width: 480px; margin: auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 32px;">
               <div style="text-align: center; margin-bottom: 24px;">
@@ -130,9 +165,10 @@ const transporter = nodemailer.createTransport({
               </p>
             </div>
           </div>
-        `
-      });
-    return reply.status(200).send({message: "Link de verificação enviado com sucesso!"});
+        `,
+    });
+    return reply
+      .status(200)
+      .send({ message: "Link de verificação enviado com sucesso!" });
   });
 }
-

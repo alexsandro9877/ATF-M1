@@ -9,7 +9,6 @@ import axios from "axios";
 
 export async function mercadoLivreRoutes(app: FastifyInstance) {
   app.get("/api/mercadolivre/callback", mercadoLivreCallback);
-
   app.get("/api/auth/mercadolivre/callback", async (req, reply) => {
     const client_id = process.env.ML_CLIENT_ID!;
     const client_secret = process.env.ML_CLIENT_SECRET!;
@@ -41,32 +40,23 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
     }
   });
   //// para pegar o token para poder gerar o refresh token
-  
-  app.get(
-    "/api/auth/mercadolivre/login",
-    async function (request: FastifyRequest, reply: FastifyReply) {
+  app.get("/api/auth/mercadolivre/login",async function (request: FastifyRequest, reply: FastifyReply) {
       const redirect_uri = process.env.ML_REDIRECT_URI!;
       const client_id = process.env.ML_CLIENT_ID!;
       const url = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
       reply.redirect(url);
     }
   );
-  app.post(
-    "/api/mercadolivre/callback",
-    async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post("/api/mercadolivre/callback", async (request: FastifyRequest, reply: FastifyReply) => {
       console.log(request)
       // return new mercadolibreResToken().handle(request, reply);
     }
   );
-   app.get(
-    "/auth/user",
-    async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get("/api/mercadolivre/auth/user", async (request: FastifyRequest, reply: FastifyReply) => {
       return new mercadolibreResToken().handle(request, reply);
     }
   );
-   app.get(
-    "/auth/cache",
-    async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get("/api/mercadolivre/auth/cache", async (request: FastifyRequest, reply: FastifyReply) => {
       return new mercadolibreResCache().handle(request, reply);
     }
   );
