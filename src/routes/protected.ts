@@ -135,7 +135,7 @@ export async function protectedRoutes(app: FastifyInstance) {
   app.post("/api/change-email", async (req, reply) => {
     const {  uid,    email } = req.body as {      email: string;      uid: string;    };
     const actionCodeSettings = {
-    url: 'https://full-automate-site.vercel.app',
+    url: 'https://ecommerce-app-five-phi.vercel.app/',
     handleCodeInApp: true
   };
     if (!email || !uid) {
@@ -287,8 +287,7 @@ export async function protectedRoutes(app: FastifyInstance) {
 // });
 
 
-//   Ótima pergunta! O tenantManager no Firebase Admin SDK está relacionado ao recurso chamado Firebase Multi-Tenancy (multi-inquilino), que é útil quando você precisa gerenciar múltiplas "instâncias" independentes de autenticação dentro do mesmo projeto Firebase — como se fossem clientes separados com seus próprios usuários, regras e configurações.
-//  O que é um "tenant"?
+///  O que é um "tenant"?
 // Um tenant (ou inquilino) representa uma organização, empresa ou cliente diferente no seu sistema, cada um com:
 // seus próprios usuários,
 // provedores de login,
@@ -310,11 +309,11 @@ export async function protectedRoutes(app: FastifyInstance) {
 // });
 
 
-// ⚠️ Importante:
+//  Importante:
 // O recurso Multi-Tenancy está disponível somente no Firebase Authentication para clientes do plano Blaze (pago).
 // É necessário ativar o suporte a tenants no Firebase Console > Autenticação > Multi-tenancy.
 
-// 🧠 Quando usar Multi-Tenancy
+//  Quando usar Multi-Tenancy
 // Use tenantManager se:
 // Seu app serve vários clientes independentes (ex: um sistema white-label).
 // Você precisa isolar usuários de diferentes organizações.

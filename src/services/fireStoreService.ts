@@ -11,7 +11,6 @@ class GetAllFromFireStoreService {
     return getCollection;
   }
 }
-
 // ADD: Adicionar novo documento com ID automático
 class AddFromFireStoreService {
   async execute(collection: string, obj: any) {
@@ -68,7 +67,6 @@ class GetByIdFromFireStoreService {
     if (!doc.exists) {
       throw new Error(`Documento com id ${id} não encontrado na coleção ${collection}`);
     }
-
     return { id: doc.id, ...doc.data() };
   }
 }

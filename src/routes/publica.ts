@@ -6,6 +6,7 @@ import {
 import { admin } from "../lib/firebase";
 import nodemailer from "nodemailer";
 import { generateToken } from "../lib/authService";
+import { GetAllFromProductServiceWebProduct, GetFromProductServiceWebProduct } from "../controllers/productController";
 
 export async function publica(app: FastifyInstance) {
 
@@ -21,8 +22,6 @@ app.post("/tokenStore", async (request, reply) => {
 
   return reply.status(401).send({ message: "Credenciais inválidas" });
 });
-
-
   app.post("/login", async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       return new singInFirebase().handle(request, reply);
@@ -42,7 +41,18 @@ app.post("/tokenStore", async (request, reply) => {
     },
   });
 
-  // ✅ Etapa 2 – Gere uma senha de app
+
+    app.post("/search_into_product",async (request: FastifyRequest, reply: FastifyReply) => {
+      return new GetFromProductServiceWebProduct().handle(request, reply);
+    }
+  );
+
+  app.get("/search_all_product",async (request: FastifyRequest, reply: FastifyReply) => {
+      return new GetAllFromProductServiceWebProduct().handle(request, reply);
+    }
+  );
+
+  // Etapa 2 – Gere uma senha de app
   // Acesse: https://myaccount.google.com/apppasswords
   // Faça login novamente, se necessário.
   // Em Selecionar app, escolha Outro (nome personalizado) e digite algo como Nodemailer.
@@ -57,7 +67,7 @@ app.post("/tokenStore", async (request, reply) => {
     }
     try {
       const actionCodeSettings = {
-        url: "https://full-automate-site.vercel.app", // URL para onde o usuário será redirecionado após redefinir a senha
+        url: "https://ecommerce-app-five-phi.vercel.app/", // URL para onde o usuário será redirecionado após redefinir a senha
         handleCodeInApp: true,
       };
 
