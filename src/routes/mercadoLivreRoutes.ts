@@ -3,6 +3,9 @@ import {
   mercadoLivreCallback,
   mercadolibreResToken,
   mercadolibreResCache,
+  getMercadoLivreOrdersAll,
+  getCategoryAttributesController,
+  postPublicProductController,
 } from "../controllers/mercadoLivreController";
 
 import axios from "axios";
@@ -53,14 +56,23 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
     }
   );
   app.get("/api/mercadolivre/auth/user", async (request: FastifyRequest, reply: FastifyReply) => {
-      return new mercadolibreResToken().handle(request, reply);
-    }
+      return new mercadolibreResToken().handle(request, reply); }
   );
+  app.get("/api/mercadolivre/orders", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new getMercadoLivreOrdersAll().handle(request, reply); }
+  );
+   app.get("/api/mercadolivre/categories/:categoryId/attributes", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new getCategoryAttributesController().handle(request, reply); }  );
+   app.post("/api/mercadolivre/products", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new postPublicProductController().handle(request, reply); }   
+  );
+  
   app.get("/api/mercadolivre/auth/cache", async (request: FastifyRequest, reply: FastifyReply) => {
       return new mercadolibreResCache().handle(request, reply);
     }
   );
  
+  
 
  
 

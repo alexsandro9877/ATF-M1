@@ -36,6 +36,3 @@ export async function buscarProdutoDoML() {
   return token;
 }
 
-// Se quiser testar diretamente o script
-// Remova se for usar apenas como módulo
-
