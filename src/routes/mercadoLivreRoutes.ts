@@ -41,7 +41,7 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
   });
   //// para pegar o token para poder gerar o refresh token
   app.get("/api/auth/mercadolivre/login",async function (request: FastifyRequest, reply: FastifyReply) {
-      const redirect_uri = process.env.ML_REDIRECT!; /// prod
+      const redirect_uri = process.env.ML_REDIRECT_URI!; /// prod
       const client_id = process.env.ML_CLIENT_ID!;
       const url = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
       reply.redirect(url);
