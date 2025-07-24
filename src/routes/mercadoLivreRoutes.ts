@@ -9,7 +9,7 @@ import axios from "axios";
 
 export async function mercadoLivreRoutes(app: FastifyInstance) {
   app.get("/api/mercadolivre/callback", mercadoLivreCallback);
-  app.get("/api/auth/mercadolivre/callback", async (req, reply) => {
+  app.get("/auth/mercadolivre/callback", async (req, reply) => {
     const client_id = process.env.ML_CLIENT_ID!;
     const client_secret = process.env.ML_CLIENT_SECRET!;
     const redirect_uri = process.env.ML_REDIRECT_URI!;
@@ -41,7 +41,7 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
   });
   //// para pegar o token para poder gerar o refresh token
   app.get("/api/auth/mercadolivre/login",async function (request: FastifyRequest, reply: FastifyReply) {
-      const redirect_uri = process.env.ML_REDIRECT_URI!;
+      const redirect_uri = process.env.ML_REDIRECT!; /// prod
       const client_id = process.env.ML_CLIENT_ID!;
       const url = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
       reply.redirect(url);
@@ -60,4 +60,8 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
       return new mercadolibreResCache().handle(request, reply);
     }
   );
+ 
+
+ 
+
 }

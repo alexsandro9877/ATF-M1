@@ -6,22 +6,31 @@ import {
 import { admin } from "../lib/firebase";
 import nodemailer from "nodemailer";
 import { generateToken } from "../lib/authService";
-import { GetAllFromProductServiceWebProduct, GetFromProductServiceWebProduct } from "../controllers/productController";
+import {
+  AddFromProductServiceWebProduct,
+  DeleteFromFireStoreProductControllerWebProduct,
+  GetAllFromProductServiceWebProduct,
+  GetFromProductServiceWebProduct,
+  GetFromProductServiceWebProductByGtin,
+  SetFromFireStoreProductControllerWebProduct,
+} from "../controllers/productController";
 
 export async function publica(app: FastifyInstance) {
+  app.post("/tokenStore", async (request, reply) => {
+    const { email, password } = request.body as {
+      email: string;
+      password: string;
+    };
 
-app.post("/tokenStore", async (request, reply) => {
-  const { email, password } = request.body as { email: string; password: string };
+    // Aqui você valida o usuário na sua base
+    if (email === "teste@teste.com" && password === "123456") {
+      const token = generateToken({ userId: "teste", email });
+      console.log(token);
+      return reply.send({ token });
+    }
 
-  // Aqui você valida o usuário na sua base
-  if (email === "teste@teste.com" && password === "123456") {
-    const token = generateToken({ userId: "teste", email });
-    console.log(token)
-    return reply.send({ token });
-  }
-
-  return reply.status(401).send({ message: "Credenciais inválidas" });
-});
+    return reply.status(401).send({ message: "Credenciais inválidas" });
+  });
   app.post("/login", async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       return new singInFirebase().handle(request, reply);
@@ -40,18 +49,32 @@ app.post("/tokenStore", async (request, reply) => {
       pass: "immggxbnsarwvkgj",
     },
   });
-
-
-    app.post("/search_into_product",async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post("/search_into_product",async (request: FastifyRequest, reply: FastifyReply) => {
       return new GetFromProductServiceWebProduct().handle(request, reply);
     }
   );
-
-  app.get("/search_all_product",async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get("/search_all_product", async (request: FastifyRequest, reply: FastifyReply) => {
       return new GetAllFromProductServiceWebProduct().handle(request, reply);
     }
   );
+  app.post("/search_byGtin_product", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new GetFromProductServiceWebProductByGtin().handle(request, reply);
+    }
+  );
 
+    app.post("/search_set_product", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new SetFromFireStoreProductControllerWebProduct().handle(request, reply);
+    }
+  );
+    app.post("/search_delete_product", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new DeleteFromFireStoreProductControllerWebProduct().handle(request, reply);
+    }
+  );
+
+   app.post("/search_new_product", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new AddFromProductServiceWebProduct().handle(request, reply);
+    }
+  );
   // Etapa 2 – Gere uma senha de app
   // Acesse: https://myaccount.google.com/apppasswords
   // Faça login novamente, se necessário.

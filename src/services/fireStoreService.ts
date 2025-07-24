@@ -63,7 +63,6 @@ class GetByIdFromFireStoreService {
   async execute(collection: string, id: string) {
     const docRef = admin.firestore().collection(collection).doc(id);
     const doc = await docRef.get();
-
     if (!doc.exists) {
       throw new Error(`Documento com id ${id} não encontrado na coleção ${collection}`);
     }
@@ -86,7 +85,6 @@ class GetFromMultipleCollectionsByIdService {
   }
 }
 
-
 class AddToMultipleCollectionsWithSameIdService {
   async execute(data: any, collections: string[]) {
     const firestore = admin.firestore();
@@ -105,10 +103,6 @@ class AddToMultipleCollectionsWithSameIdService {
     return { success: true, id };
   }
 }
-
-
-
-
 
 export {
   AddToMultipleCollectionsWithSameIdService,

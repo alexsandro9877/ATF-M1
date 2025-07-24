@@ -231,8 +231,7 @@ export async function protectedRoutes(app: FastifyInstance) {
       return reply.status(500).send({ error: "Erro ao atualizar o status do usuário" });
     }
   });
-
- ///
+ ///Atualizar a photo
   app.post("/api/update-photo", async (req, reply) => {
     const { uid, photoURL } = req.body as { uid: string; photoURL: string };
     if (!uid || !photoURL) {

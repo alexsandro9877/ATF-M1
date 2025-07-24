@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply } from "fastify";
+import { FastifyRequest, FastifyReply, errorCodes } from "fastify";
 import {
   AddFromFireStoreService,
   DeleteFromFireStoreService,
@@ -42,7 +42,7 @@ export class AddFromFireStoreServiceWebBase {
       reply.status(200).send(resp);
     } catch (error) {
       //@ts-ignore
-      reply.status(500).send({ message: error.message });
+      reply.status(404).send({ message: error.message });
     }
   }
 }

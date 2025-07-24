@@ -4,6 +4,7 @@ import { protectedRoutes } from './protected';
 import { mercadoLivreRoutes } from './mercadoLivreRoutes';
 import { publica } from './publica';
 import { fireStore } from './fireStore';
+import { mercadoLivreAuthRoutes } from './MercadoLivreAuth';
 
 export async function routes(app: FastifyInstance) {
   // Rota de proteção para gerar token
@@ -13,4 +14,5 @@ export async function routes(app: FastifyInstance) {
   app.register(publica);
   app.register(mercadoLivreRoutes);  
   app.register(fireStore);  
+  // app.register(mercadoLivreAuthRoutes)
 }
