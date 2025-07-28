@@ -14,8 +14,27 @@ import {
   GetFromProductServiceWebProductByGtin,
   SetFromFireStoreProductControllerWebProduct,
 } from "../controllers/productController";
+import { addByInventoryProductController, addByInventoryProductMovimentoController, getAllByInventoryProductController, getAllByInventoryProductMovimentoController } from "../controllers/inventoryController";
 
 export async function publica(app: FastifyInstance) {
+
+app.post("/add_inventory", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new addByInventoryProductController().handle(request, reply);
+    }
+  );
+  app.post("/add_movimento", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new addByInventoryProductMovimentoController().handle(request, reply);
+    }
+  );
+   app.get("/get_est_product", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new getAllByInventoryProductController().handle(request, reply);
+    }
+  );
+
+    app.post("/get_movimento", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new getAllByInventoryProductMovimentoController().handle(request, reply);
+    }
+  );
   app.post("/tokenStore", async (request, reply) => {
     const { email, password } = request.body as {
       email: string;

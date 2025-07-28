@@ -13,7 +13,7 @@ interface IProductEan {
   ean: string;
 }
 
-interface IProductEanSet {
+export interface IProductEanSet {
   data: Product;
 }
 

@@ -44,7 +44,6 @@ export class SetFromFireStoreProductService {
   }
 }
 
-
 export class DeleteFromFireStoreProductService {
   async execute(collection: string, id: string) {
     const docRef = admin.firestore().collection(collection).doc(id);
@@ -56,8 +55,6 @@ export class DeleteFromFireStoreProductService {
     return { success: true, message: `Documento ${id} deletado com sucesso.` };
   }
 }
-
-
 export class GetByIdFromProductServiceByGtin {
   async execute(collection: string, ean: string) : Promise<Product> {
 
