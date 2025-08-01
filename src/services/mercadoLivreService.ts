@@ -224,6 +224,24 @@ class searchProducts {
   }
 }
 
+class getTrends {
+  async execute() {
+    const token: TokenDataResponse = await refreshAccessToken();
+    try {
+      const response = await axios.get("https://api.mercadolibre.com/trends/MLB", {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+          Accept: "application/json",
+          "User-Agent": "Mozilla/5.0",
+        },
+      });
+      return response.data; // Array de tendências
+    } catch (error: any) {
+      return  { error: "Erro ao buscar tendencias no Mercado Livre", status: error.response?.data.status  };
+    }
+  }
+}
+
 
 export {
   searchProducts,
@@ -233,7 +251,8 @@ export {
   getMercadoLivreOrders,
   getCategoryAttributes,
   postPublicProduct,
-  searchProductByName
+  searchProductByName,
+  getTrends
 };
 
 
