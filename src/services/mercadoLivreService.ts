@@ -141,8 +141,100 @@ interface ProdutoML {
   }
 }
 
+class searchProductByName {
+  async execute(query: string) {
+     const token: TokenDataResponse = await refreshAccessToken();
 
-export { responseToken, responseTokenCache, getMercadoLivreOrders,getCategoryAttributes,postPublicProduct };
+    try {
+      const response = await axios.get(
+        `https://api.mercadolibre.com/sites/MLB/search`,
+        {
+          params: { q: query, limit: 1 },
+          headers: {
+             Authorization: `Bearer ${token.access_token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+      // Retorna só os campos úteis
+      const first = response.data.results?.[0];
+      if (!first) {
+        return { error: "Nenhum produto encontrado" };
+      }
+
+      return {
+        title: first.title,
+        price: first.price,
+        currency: first.currency_id,
+        thumbnail: first.thumbnail,
+        link: first.permalink,
+      };
+    } catch (error: any) {
+      console.error(
+        "Erro ao buscar produto:",
+        error.response?.data || error.message
+      );
+      return { error: "Erro ao buscar produto no Mercado Livre" };
+    }
+  }
+}
+
+
+class getItemDescription {
+  async execute(itemId: string) {
+     const token: TokenDataResponse = await refreshAccessToken();
+    try {
+      const response = await axios.get(`https://api.mercadolibre.com/items/${itemId}`, {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+          Accept: "application/json",
+        },
+      });
+
+      return response.data; // { plain_text: "descrição do produto ..." }
+    } catch (error: any) {
+      console.error("Erro ao buscar descrição do item:", error.response?.data || error.message);
+      return { error: "Erro ao buscar descrição do item no Mercado Livre" };
+    }
+  }
+}
+
+class searchProducts {
+  async execute(query: string, limit = 10) {
+     const token: TokenDataResponse = await refreshAccessToken();
+    try {
+      const response = await axios.get("https://api.mercadolibre.com/sites/MLB/search", {
+       
+        params: { q: query, limit },
+        headers: { 
+          Accept: "application/json",
+         Authorization: `Bearer ${token.access_token}`,
+        },
+      });
+
+      return response.data; // aqui vem o array `results` com os produtos
+    } catch (error: any) {
+      console.error("Erro na busca de produtos:", error.response?.data.status || error.message);
+      if (error.response?.data.status === 403) {
+        return  { error: "Erro ao buscar produtos no Mercado Livre", status: error.response?.data.status  };
+      }
+      return { error: "Erro ao buscar produtos no Mercado Livre" };
+    }
+  }
+}
+
+
+export {
+  searchProducts,
+  getItemDescription,
+  responseToken,
+  responseTokenCache,
+  getMercadoLivreOrders,
+  getCategoryAttributes,
+  postPublicProduct,
+  searchProductByName
+};
 
 
 // "shipping": {

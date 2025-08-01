@@ -6,6 +6,9 @@ import {
   getMercadoLivreOrdersAll,
   getCategoryAttributesController,
   postPublicProductController,
+  searchProductByNameController,
+  getItemDescriptionController,
+  searchProductsController,
 } from "../controllers/mercadoLivreController";
 
 import axios from "axios";
@@ -66,6 +69,15 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
   );
   app.post("/api/mercadolivre/products", async (request: FastifyRequest, reply: FastifyReply) => {
       return new postPublicProductController().handle(request, reply); }   
+  );
+   app.get("/api/mercadolivre/ProductByName", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new searchProductByNameController().handle(request, reply); }   
+  );
+    app.get("/api/mercadolivre/items/id/:itemId", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new getItemDescriptionController().handle(request, reply); }   
+  );
+   app.get("/api/mercadolivre/search", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new searchProductsController().handle(request, reply); }   
   );
   app.get("/api/mercadolivre/auth/cache", async (request: FastifyRequest, reply: FastifyReply) => {
       return new mercadolibreResCache().handle(request, reply);
