@@ -15,11 +15,9 @@ interface WebBasePayload {
   email: string;
   senha: string;
 }
-
 interface IdPayload {
   id: string;
 }
-
 export class GetAllFromFireStoreServiceWebBase {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const service = new GetAllFromFireStoreService();
@@ -32,7 +30,6 @@ export class GetAllFromFireStoreServiceWebBase {
     }
   }
 }
-
 export class AddFromFireStoreServiceWebBase {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const { email, senha } = request.body as WebBasePayload;
@@ -46,7 +43,6 @@ export class AddFromFireStoreServiceWebBase {
     }
   }
 }
-
 export class DeleteFromFireStoreServiceWebBase {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const { id } = request.body as IdPayload;
@@ -60,7 +56,6 @@ export class DeleteFromFireStoreServiceWebBase {
     }
   }
 }
-
 // Opcional: Controller para update
 export class UpdateFromFireStoreServiceWebBase {
   async handle(request: FastifyRequest, reply: FastifyReply) {
@@ -75,7 +70,6 @@ export class UpdateFromFireStoreServiceWebBase {
     }
   }
 }
-
 // Opcional: Controller para set (sobrescrever ou merge)
 export class SetFromFireStoreServiceWebBase {
   async handle(request: FastifyRequest, reply: FastifyReply) {
@@ -94,7 +88,6 @@ export class SetFromFireStoreServiceWebBase {
     }
   }
 }
-
 export class GetByIdFromFireStoreServiceWebBase {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const { id } = request.params as { id: string };
@@ -108,7 +101,6 @@ export class GetByIdFromFireStoreServiceWebBase {
     }
   }
 }
-
 export class AddToMultipleCollectionsWithSameIdController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const data = request.body as any;
@@ -123,8 +115,6 @@ export class AddToMultipleCollectionsWithSameIdController {
     }
   }
 }
-
-
 export class GetFromMultipleCollectionsByIdController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const { id } = request.params as { id: string };

@@ -12,11 +12,9 @@ import { Product } from "../types/product";
 interface IProductEan {
   ean: string;
 }
-
 export interface IProductEanSet {
   data: Product;
 }
-
 export class GetAllFromProductServiceWebProduct {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const service = new GetAllFromProductService();
@@ -29,7 +27,6 @@ export class GetAllFromProductServiceWebProduct {
     }
   }
 }
-
 export class DeleteFromFireStoreProductControllerWebProduct {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const service = new DeleteFromFireStoreProductService();
@@ -46,7 +43,6 @@ export class DeleteFromFireStoreProductControllerWebProduct {
     }
   }
 }
-
 export class AddFromProductServiceWebProduct {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const service = new AddFromProductService();
@@ -92,7 +88,6 @@ export class SetFromFireStoreProductControllerWebProduct {
     }
   }
 }
-
 export class GetFromProductServiceWebProduct {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const { ean } = request.body as IProductEan;

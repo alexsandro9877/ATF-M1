@@ -351,6 +351,7 @@ export class adminInventory {
       id: doc.id,
       ...doc.data(),
     })) as ProductInventory[];
+    
   }
   async listarMovimentacoes(filtro?: {
     produtoId?: string;

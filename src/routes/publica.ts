@@ -18,7 +18,7 @@ import { addByInventoryProductController, addByInventoryProductMovimentoControll
 
 export async function publica(app: FastifyInstance) {
 
-app.post("/add_inventory", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post("/add_inventory", async (request: FastifyRequest, reply: FastifyReply) => { 
       return new addByInventoryProductController().handle(request, reply);
     }
   );
@@ -30,8 +30,7 @@ app.post("/add_inventory", async (request: FastifyRequest, reply: FastifyReply) 
       return new getAllByInventoryProductController().handle(request, reply);
     }
   );
-
-    app.post("/get_movimento", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post("/get_movimento", async (request: FastifyRequest, reply: FastifyReply) => {
       return new getAllByInventoryProductMovimentoController().handle(request, reply);
     }
   );
@@ -80,17 +79,14 @@ app.post("/add_inventory", async (request: FastifyRequest, reply: FastifyReply) 
       return new GetFromProductServiceWebProductByGtin().handle(request, reply);
     }
   );
-
-    app.post("/search_set_product", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post("/search_set_product", async (request: FastifyRequest, reply: FastifyReply) => {
       return new SetFromFireStoreProductControllerWebProduct().handle(request, reply);
     }
   );
-    app.post("/search_delete_product", async (request: FastifyRequest, reply: FastifyReply) => {
-      return new DeleteFromFireStoreProductControllerWebProduct().handle(request, reply);
-    }
+  app.post("/search_delete_product", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new DeleteFromFireStoreProductControllerWebProduct().handle(request, reply);}
   );
-
-   app.post("/search_new_product", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post("/search_new_product", async (request: FastifyRequest, reply: FastifyReply) => {
       return new AddFromProductServiceWebProduct().handle(request, reply);
     }
   );
@@ -143,7 +139,6 @@ app.post("/add_inventory", async (request: FastifyRequest, reply: FastifyReply) 
       });
     }
   });
-
   //criar um endpoint para criar um usuário
   app.post("/api/create-user", async (req, reply) => {
     const { email, password } = req.body as { email: string; password: string };

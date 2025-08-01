@@ -27,9 +27,10 @@ export class GetByIdFromProductService {
     if (querySnapshot.empty) {
       const resp = await getProductFromCosmosService.execute(ean);
       if (resp) {
+        await addFromProductService.execute(collection, resp)
          return resp;
       }
-      await addFromProductService.execute(collection, resp)
+      
     }  
     const foundDoc = querySnapshot.docs[0];
     return { id: foundDoc.id, ...foundDoc.data() };

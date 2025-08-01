@@ -9,7 +9,6 @@ export async function mercadoLivreAuthRoutes(app: FastifyInstance) {
     const authUrl = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
     reply.redirect(authUrl);
   });
-
   app.get('auth/mercadolivre/callback', async (req, reply) => {
     const { code } = req.query as { code: string };
 

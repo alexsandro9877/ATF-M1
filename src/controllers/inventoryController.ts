@@ -19,7 +19,6 @@ export class addByInventoryProductController {
     }
   }
 }
-
 export class getAllByInventoryProductController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const serviceInventory = new adminInventory();
@@ -33,7 +32,6 @@ export class getAllByInventoryProductController {
     }
   }
 }
-
 export class getAllByInventoryProductMovimentoController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const serviceInventory = new adminInventory();

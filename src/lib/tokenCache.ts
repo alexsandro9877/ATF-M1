@@ -9,8 +9,6 @@ export type TokenDataResponse = {
   refresh_token: string;
 };
 
-
-
 let token: TokenDataResponse | null = null;
 
  function setToken(data: TokenDataResponse) {
