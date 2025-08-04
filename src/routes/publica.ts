@@ -165,7 +165,6 @@ export async function publica(app: FastifyInstance) {
         .send({ error: error.message || "Erro ao criar usuário" });
     }
   });
-
   ///criar um endpoint que validate o emil do usuário
   app.post("/api/validate-email", async (req, reply) => {
     const actionCodeSettings = {

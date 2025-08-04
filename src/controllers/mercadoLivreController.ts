@@ -8,7 +8,8 @@ import {
   searchProductByName,
   getItemDescription,
   searchProducts,
-  getTrends
+  getTrends,
+  histTrends
 } from "../services/mercadoLivreService";
 
 const mercadoLivreCallback = async (
@@ -167,4 +168,19 @@ class getTrendsController {
   }
 }
 
-export { mercadolibreResToken,getTrendsController,searchProductsController,searchProductByNameController,getItemDescriptionController, mercadoLivreCallback,postPublicProductController,getCategoryAttributesController, mercadolibreResCache ,getMercadoLivreOrdersAll};
+class histTrendsController {
+  async handle(request: FastifyRequest, reply: FastifyReply) {
+     const { data } = request.query as { data: string};
+    console.log(data)
+    const service = new histTrends();
+    try {
+      const trends = await service.getGroupsTrends(data);
+     return reply.send(trends);
+    } catch (error: any) {
+      reply.status(500).send({ error: error.message || "Erro interno" });
+    }
+  }
+}
+
+
+export { histTrendsController,mercadolibreResToken,getTrendsController,searchProductsController,searchProductByNameController,getItemDescriptionController, mercadoLivreCallback,postPublicProductController,getCategoryAttributesController, mercadolibreResCache ,getMercadoLivreOrdersAll};

@@ -5,7 +5,16 @@ import {
 } from "../integrations/mercadoLivre";
 import { TokenDataResponse, getAccessToken } from "../lib/tokenCache";
 import axios from "axios";
-
+import {
+  converterParaFormatoBRHoje,
+  dataHoraAtualFormato,
+} from "../utils/dataSistem";
+import {
+  AddFromFireStoreService,
+  GetByIdFromFireStoreService,
+  UpdateFromFireStoreService,
+} from "./fireStoreService";
+import { admin } from "../lib/firebase";
 class responseToken {
   async execute() {
     const token: TokenDataResponse = await refreshAccessToken();
@@ -51,7 +60,7 @@ class getCategoryAttributes {
     try {
       const token: TokenDataResponse = await refreshAccessToken();
       const response = await axios.get(
-       `https://api.mercadolibre.com/categories/${categoryId}/attributes`,
+        `https://api.mercadolibre.com/categories/${categoryId}/attributes`,
         {
           headers: {
             Authorization: `Bearer ${token.access_token}`,
@@ -59,8 +68,7 @@ class getCategoryAttributes {
         }
       );
 
-        return response.data;
-
+      return response.data;
     } catch (error: any) {
       console.error(
         "Erro ao buscar pedidos:",
@@ -96,12 +104,9 @@ interface ProdutoML {
     free_shipping: boolean;
   };
 }
- class postPublicProduct {
+class postPublicProduct {
   async execute(data: ProdutoML) {
-     const {
-    description,
-    ...itemData
-  } = data;
+    const { description, ...itemData } = data;
     try {
       const token: TokenDataResponse = await refreshAccessToken();
 
@@ -113,37 +118,41 @@ interface ProdutoML {
         {
           headers: {
             Authorization: `Bearer ${token.access_token}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
+            "Content-Type": "application/json",
+            Accept: "application/json",
           },
         }
       );
 
       const itemId = response.data.id;
 
-  // 2. Enviar a descrição separadamente
-  await axios.post(`https://api.mercadolibre.com/items/${itemId}/description`, {
-    plain_text: description.plain_text,
-  }, {
-    headers: {
-      Authorization: `Bearer ${token.access_token}`,
-    },
-  });
+      // 2. Enviar a descrição separadamente
+      await axios.post(
+        `https://api.mercadolibre.com/items/${itemId}/description`,
+        {
+          plain_text: description.plain_text,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (error: any) {
       console.error(
-        'Erro ao publicar produto:',
+        "Erro ao publicar produto:",
         error.response?.data || error.message
       );
-      throw new Error('Falha ao publicar produto no Mercado Livre.');
+      throw new Error("Falha ao publicar produto no Mercado Livre.");
     }
   }
 }
 
 class searchProductByName {
   async execute(query: string) {
-     const token: TokenDataResponse = await refreshAccessToken();
+    const token: TokenDataResponse = await refreshAccessToken();
 
     try {
       const response = await axios.get(
@@ -151,7 +160,7 @@ class searchProductByName {
         {
           params: { q: query, limit: 1 },
           headers: {
-             Authorization: `Bearer ${token.access_token}`,
+            Authorization: `Bearer ${token.access_token}`,
             Accept: "application/json",
           },
         }
@@ -180,21 +189,26 @@ class searchProductByName {
   }
 }
 
-
 class getItemDescription {
   async execute(itemId: string) {
-     const token: TokenDataResponse = await refreshAccessToken();
+    const token: TokenDataResponse = await refreshAccessToken();
     try {
-      const response = await axios.get(`https://api.mercadolibre.com/items/${itemId}`, {
-        headers: {
-          Authorization: `Bearer ${token.access_token}`,
-          Accept: "application/json",
-        },
-      });
+      const response = await axios.get(
+        `https://api.mercadolibre.com/items/${itemId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+            Accept: "application/json",
+          },
+        }
+      );
 
       return response.data; // { plain_text: "descrição do produto ..." }
     } catch (error: any) {
-      console.error("Erro ao buscar descrição do item:", error.response?.data || error.message);
+      console.error(
+        "Erro ao buscar descrição do item:",
+        error.response?.data || error.message
+      );
       return { error: "Erro ao buscar descrição do item no Mercado Livre" };
     }
   }
@@ -202,22 +216,30 @@ class getItemDescription {
 
 class searchProducts {
   async execute(query: string, limit = 10) {
-     const token: TokenDataResponse = await refreshAccessToken();
+    const token: TokenDataResponse = await refreshAccessToken();
     try {
-      const response = await axios.get("https://api.mercadolibre.com/sites/MLB/search", {
-       
-        params: { q: query, limit },
-        headers: { 
-          Accept: "application/json",
-         Authorization: `Bearer ${token.access_token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://api.mercadolibre.com/sites/MLB/search",
+        {
+          params: { q: query, limit },
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token.access_token}`,
+          },
+        }
+      );
 
       return response.data; // aqui vem o array `results` com os produtos
     } catch (error: any) {
-      console.error("Erro na busca de produtos:", error.response?.data.status || error.message);
+      console.error(
+        "Erro na busca de produtos:",
+        error.response?.data.status || error.message
+      );
       if (error.response?.data.status === 403) {
-        return  { error: "Erro ao buscar produtos no Mercado Livre", status: error.response?.data.status  };
+        return {
+          error: "Erro ao buscar produtos no Mercado Livre",
+          status: error.response?.data.status,
+        };
       }
       return { error: "Erro ao buscar produtos no Mercado Livre" };
     }
@@ -228,22 +250,137 @@ class getTrends {
   async execute() {
     const token: TokenDataResponse = await refreshAccessToken();
     try {
-      const response = await axios.get("https://api.mercadolibre.com/trends/MLB", {
-        headers: {
-          Authorization: `Bearer ${token.access_token}`,
-          Accept: "application/json",
-          "User-Agent": "Mozilla/5.0",
-        },
-      });
+      const response = await axios.get(
+        "https://api.mercadolibre.com/trends/MLB",
+        {
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+            Accept: "application/json",
+            "User-Agent": "Mozilla/5.0",
+          },
+        }
+      );
       return response.data; // Array de tendências
     } catch (error: any) {
-      return  { error: "Erro ao buscar tendencias no Mercado Livre", status: error.response?.data.status  };
+      return {
+        error: "Erro ao buscar tendencias no Mercado Livre",
+        status: error.response?.data.status,
+      };
     }
   }
 }
 
+type ITreandsGroup = {};
+type ITreands = {
+  id: string;
+  keyword: string;
+  data_inclusao: string;
+  data_atualizacao?: string;
+  posts: number;
+};
 
+function extrairDataBase(dataCompleta: string): string {
+  return dataCompleta.split(" ")[0]; // "04/08/2025 16:18" → "04/08/2025"
+}
+
+class histTrends {
+
+  // 🔹 Lê dados do Firestore usando o próprio doc.id como ID
+  async executeGetMercFire(collection: string): Promise<ITreands[]> {
+    const snapshot = await admin.firestore().collection(collection).get();
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id, // ID real do Firebase
+        keyword: data.keyword,
+        posts: data.posts,
+        data_inclusao: data.data_inclusao,
+        data_atualizacao: data.data_atualizacao,
+      } as ITreands;
+    });
+  }
+
+async getGroupsTrends(data: string) {
+  const existentes = await this.executeGetMercFire("webMercadoLivreTrends");
+
+  const filtrados = existentes.filter((e) => {
+    if (!e.data_inclusao) return false;
+    const dataRegistro = e.data_inclusao.split(" ")[0].trim();
+    return dataRegistro === data;
+  });
+
+  return filtrados;
+}
+
+  // 🔹 Agrupa e salva dados no Firestore, usando apenas IDs do Firebase
+  async groupTrends(): Promise<boolean> {
+    const updateFromFireStoreService = new UpdateFromFireStoreService();
+    const addFromFireStoreService = new AddFromFireStoreService();
+
+    // Trends já existentes no Firebase
+    const existentes = await this.executeGetMercFire("webMercadoLivreTrends");
+
+    // Trends novos vindos da API
+    const novosTrends = await this.groupOrigemTrends();
+    const hoje = converterParaFormatoBRHoje();
+
+    for (const novoTrend of novosTrends) {
+      const indiceExistente = existentes.findIndex((trend) => {
+        return trend.keyword === novoTrend.keyword;
+      });
+
+      if (indiceExistente === -1) {
+        // 🔹 Não existe → incluir no Firebase
+        const novoRegistro = {
+          ...novoTrend,
+          data_inclusao: dataHoraAtualFormato(),
+        };
+
+        const newId = await addFromFireStoreService.execute(
+          "webMercadoLivreTrends",
+          novoRegistro
+        );
+
+        // existentes.push({
+        //   id: newId,
+        //   ...novoRegistro,
+        // });
+      } else {
+        const existente = existentes[indiceExistente];
+        const atualizado = {
+          ...existente,
+          ...novoTrend,
+          posts: existente.posts + 1,
+          data_atualizacao: dataHoraAtualFormato(),
+        };
+
+        await updateFromFireStoreService.execute(
+          "webMercadoLivreTrends",
+          existente.id, // 🔹 ID original do Firebase
+          atualizado
+        );
+
+        existentes[indiceExistente] = atualizado;
+      }
+    }
+    return true
+    // return await this.executeGetMercFire("webMercadoLivreTrends");
+  }
+
+
+  async groupOrigemTrends(): Promise<ITreands[]> {
+    const requestTrends: ITreands[] = await new getTrends().execute();
+    //@ts-check
+    //@ts-expect-error
+    return requestTrends.map((e) => ({
+      keyword: e.keyword,
+      posts: 1,
+    }));
+  }
+
+}
 export {
+  histTrends,
   searchProducts,
   getItemDescription,
   responseToken,
@@ -252,9 +389,8 @@ export {
   getCategoryAttributes,
   postPublicProduct,
   searchProductByName,
-  getTrends
+  getTrends,
 };
-
 
 // "shipping": {
 //   "mode": "me2",

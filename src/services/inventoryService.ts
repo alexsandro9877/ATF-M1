@@ -1,12 +1,5 @@
-import {
-  Movimentacao,
-  OrigemMovimentacao,
-  ProductInventory,
-  RelatorioFaturamento,
-  TipoMovimentacao,
-} from "../types/inventory";
+import { Movimentacao,  OrigemMovimentacao,  ProductInventory,  RelatorioFaturamento,  TipoMovimentacao} from "../types/inventory";
 import { Product } from "../types/product";
-
 import { admin } from "../lib/firebase";
 
 export class AddFromInventoryService {
@@ -456,7 +449,6 @@ export class adminInventory {
 
     return null;
   }
-
   async fecharTodosFaturamentos(): Promise<RelatorioFaturamento[]> {
     const relatorios: RelatorioFaturamento[] = [];
 
