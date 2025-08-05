@@ -19,8 +19,8 @@ cron.schedule("*/60 * * * *", async () => {
   });
 });
 
-cron.schedule('*/70 * * * *', async () => {
+cron.schedule('*/50 * * * *', async () => {
   const histTrend = new histTrends();
   console.log("[CRON] Atualizando groupTrends Mercado Livre");
-  await histTrend.groupTrends().then((e)=>e === true ? "ok" : "falha");
+  await histTrend.groupTrends();
 });
