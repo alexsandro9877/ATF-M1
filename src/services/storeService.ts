@@ -1,4 +1,5 @@
 import { admin } from "../lib/firebase";
+import { Loja } from "./fireStoreService";
 
 
 class GetAllFromFireStoreStoreService {
@@ -13,7 +14,7 @@ class GetAllFromFireStoreStoreService {
 }
 
 class AddFromFireStoreStoreService {
-  async execute(collection: string, obj: any) {
+  async execute(collection: string, obj: Loja) {
     const snapshot = await admin.firestore().collection(collection).add({
       ...obj,
     });

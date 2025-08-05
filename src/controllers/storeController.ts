@@ -1,9 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AddFromFireStoreStoreService, DeleteFromFireStoreStoreService, GetAllFromFireStoreStoreService, UpdateFromFireStoreStoreService } from "../services/storeService";
+import { Loja } from "../services/fireStoreService";
 
 export class AddFromFireStoreStoreController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const { values } = request.body  as any;
+    const  values  = request.body  as Loja;
     const service = new AddFromFireStoreStoreService();
     try {
       const resp = await service.execute("webStore",  values);
