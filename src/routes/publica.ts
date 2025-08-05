@@ -104,7 +104,7 @@ export async function publica(app: FastifyInstance) {
       return new UpdateFromFireStoreController().handle(request, reply);
     }
   );
-  app.post("/delete", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post("/delete_store", async (request: FastifyRequest, reply: FastifyReply) => {
       return new DeleteFromFireStoreController().handle(request, reply);
     }
   );

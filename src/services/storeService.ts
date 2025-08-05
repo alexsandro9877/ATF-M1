@@ -38,7 +38,15 @@ class DeleteFromFireStoreStoreService {
   }
 }
 
+
 class UpdateFromFireStoreStoreService {
+  async execute(collection: string, id: string, data: any, merge = false) {
+    const docRef = admin.firestore().collection(collection).doc(id);
+    await docRef.set(data, { merge }); // merge: true → não sobrescreve campos não informados
+    return { success: true, message: `Documento ${id} salvo com sucesso.` };
+  }
+}
+class UpdateFromFireStoreStoreServices {
   async execute(collection: string, id: string, data: any) {
     const docRef = admin.firestore().collection(collection).doc(id);
     const doc = await docRef.get();
