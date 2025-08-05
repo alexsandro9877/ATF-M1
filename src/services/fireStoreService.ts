@@ -1,5 +1,36 @@
 import { admin } from "../lib/firebase";
 
+export interface Loja {
+  id?: string;
+  tipoCadastro: "pessoa" | "empresa";
+  nome: string;
+  razaoSocial?: string;
+  cnpj?: string;
+  cpf?: string;
+  inscricaoEstadual?: string;
+  telefone?: string;
+  email?: string;
+  responsavel?: string;
+  logoIcone?: string;
+  logoTema?: string;
+  endereco: {
+    rua: string;
+    numero: string;
+    complemento?: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    cep: string;
+  };
+  integracoes?: {
+    [parceiro: string]: {
+      ativo: boolean;
+      token: string;
+    };
+  };
+  ativo: boolean;
+  dataCadastro: string;
+}
 // GET: Buscar todos os documentos
 class GetAllFromFireStoreService {
   async execute(collection: string) {

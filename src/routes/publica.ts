@@ -15,6 +15,8 @@ import {
   SetFromFireStoreProductControllerWebProduct,
 } from "../controllers/productController";
 import { addByInventoryProductController, addByInventoryProductMovimentoController, getAllByInventoryProductController, getAllByInventoryProductMovimentoController } from "../controllers/inventoryController";
+import { AddFromFireStoreStoreController, DeleteFromFireStoreController, GetAllFromFireStoreStoreController, UpdateFromFireStoreController } from "../controllers/storeController";
+
 
 export async function publica(app: FastifyInstance) {
 
@@ -90,6 +92,23 @@ export async function publica(app: FastifyInstance) {
       return new AddFromProductServiceWebProduct().handle(request, reply);
     }
   );
+   app.post("/add_store", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new AddFromFireStoreStoreController().handle(request, reply);
+    }
+  );
+   app.get("/get_store", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new GetAllFromFireStoreStoreController().handle(request, reply);
+    }
+  );
+  app.post("/add_store/att", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new UpdateFromFireStoreController().handle(request, reply);
+    }
+  );
+  app.post("/delete", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new DeleteFromFireStoreController().handle(request, reply);
+    }
+  );
+
   // Etapa 2 – Gere uma senha de app
   // Acesse: https://myaccount.google.com/apppasswords
   // Faça login novamente, se necessário.
