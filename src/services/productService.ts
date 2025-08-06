@@ -56,6 +56,7 @@ export class DeleteFromFireStoreProductService {
     return { success: true, message: `Documento ${id} deletado com sucesso.` };
   }
 }
+
 export class GetByIdFromProductServiceByGtin {
   async execute(collection: string, ean: string) : Promise<Product> {
 

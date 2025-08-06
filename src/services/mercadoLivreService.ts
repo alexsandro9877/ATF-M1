@@ -15,6 +15,8 @@ import {
   UpdateFromFireStoreService,
 } from "./fireStoreService";
 import { admin } from "../lib/firebase";
+import { MercadoLivreSendItem } from "../types/MercadoLivreItem";
+import { AddFromProductService } from "./productService";
 class responseToken {
   async execute() {
     const token: TokenDataResponse = await refreshAccessToken();
@@ -104,13 +106,13 @@ interface ProdutoML {
     free_shipping: boolean;
   };
 }
+
 class postPublicProduct {
-  async execute(data: ProdutoML) {
-    const { description, ...itemData } = data;
+  async execute(data: MercadoLivreSendItem, idFire: string) {
+    const { description } = data;
+    const addProdut = new AddFromProductService
     try {
       const token: TokenDataResponse = await refreshAccessToken();
-
-      console.log("Dados enviados ao Mercado Livre:", itemData);
 
       const response = await axios.post(
         "https://api.mercadolibre.com/items",
@@ -139,7 +141,10 @@ class postPublicProduct {
         }
       );
 
+      
+      addProdut.execute("webProductMercadoLivre", {...response.data, idFire})
       return response.data;
+
     } catch (error: any) {
       console.error(
         "Erro ao publicar produto:",

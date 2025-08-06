@@ -76,10 +76,10 @@ export class GetFromProductServiceWebProductByGtin {
 export class SetFromFireStoreProductControllerWebProduct {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const { data } = request.body as IProductEanSet;
-    const { merge } = request.params as any;
+    // const { merge } = request.params as any;
     const service = new SetFromFireStoreProductService();
     try {
-      const resp = await service.execute("webProduct", data, merge);
+      const resp = await service.execute("webProduct", data, true);
       reply.status(200).send(resp);
     } catch (error) {
       console.log(error);

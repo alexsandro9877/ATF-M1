@@ -69,7 +69,7 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
   app.get("/api/mercadolivre/categories/:categoryId/attributes", async (request: FastifyRequest, reply: FastifyReply) => {
       return new getCategoryAttributesController().handle(request, reply); }  
   );
-  app.post("/api/mercadolivre/products", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post("/api/mercadolivre/products/:idFire", async (request: FastifyRequest, reply: FastifyReply) => {
       return new postPublicProductController().handle(request, reply); }   
   );
    app.get("/api/mercadolivre/ProductByName", async (request: FastifyRequest, reply: FastifyReply) => {

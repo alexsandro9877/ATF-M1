@@ -11,6 +11,7 @@ import {
   getTrends,
   histTrends
 } from "../services/mercadoLivreService";
+import { MercadoLivreSendItem } from "../types/MercadoLivreItem";
 
 const mercadoLivreCallback = async (
   request: FastifyRequest,
@@ -80,17 +81,22 @@ class getCategoryAttributesController {
 
 class postPublicProductController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const payload: any = request.body;
+    const payload = request.body as MercadoLivreSendItem;
+    const { idFire } = request.params as { idFire: string };
+
+      if (!idFire) {
+      return reply.status(400).send({ error: "Parâmetro idFire é obrigatório" });
+    }
     const PostPublicProduct = new postPublicProduct();
     try {
-      const response = await PostPublicProduct.execute(payload);
+      const response = await PostPublicProduct.execute(payload, idFire);
       reply.status(200).send(response);
     } catch (error) {
       //@ts-ignore
       reply.status(500).send({ message: error.message });
     }
   }
-}
+} 
 class searchProductByNameController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
 
