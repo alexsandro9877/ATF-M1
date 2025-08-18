@@ -11,6 +11,7 @@ import {
   searchProductsController,
   getTrendsController,
   histTrendsController,
+  getCategoryController
 } from "../controllers/mercadoLivreController";
 
 import axios from "axios";
@@ -68,6 +69,9 @@ export async function mercadoLivreRoutes(app: FastifyInstance) {
   );
   app.get("/api/mercadolivre/categories/:categoryId/attributes", async (request: FastifyRequest, reply: FastifyReply) => {
       return new getCategoryAttributesController().handle(request, reply); }  
+  );
+   app.get("/api/mercadolivre/categories", async (request: FastifyRequest, reply: FastifyReply) => {
+      return new getCategoryController().handle(request, reply); }  
   );
   app.post("/api/mercadolivre/products/:idFire", async (request: FastifyRequest, reply: FastifyReply) => {
       return new postPublicProductController().handle(request, reply); }   

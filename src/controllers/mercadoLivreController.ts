@@ -9,7 +9,8 @@ import {
   getItemDescription,
   searchProducts,
   getTrends,
-  histTrends
+  histTrends,
+  getCategoryCategory
 } from "../services/mercadoLivreService";
 import { MercadoLivreSendItem } from "../types/MercadoLivreItem";
 
@@ -78,6 +79,20 @@ class getCategoryAttributesController {
     }
   }
 }
+
+class getCategoryController {
+  async handle(request: FastifyRequest, reply: FastifyReply) {
+    const Category = new getCategoryCategory();
+    try {
+      const response = await Category.execute();
+      reply.send(response);
+    } catch (error) {
+      //@ts-ignore
+      reply.status(500).send({ message: error.message });
+    }
+  }
+}
+
 
 class postPublicProductController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
@@ -189,4 +204,4 @@ class histTrendsController {
 }
 
 
-export { histTrendsController,mercadolibreResToken,getTrendsController,searchProductsController,searchProductByNameController,getItemDescriptionController, mercadoLivreCallback,postPublicProductController,getCategoryAttributesController, mercadolibreResCache ,getMercadoLivreOrdersAll};
+export { histTrendsController,getCategoryController,mercadolibreResToken,getTrendsController,searchProductsController,searchProductByNameController,getItemDescriptionController, mercadoLivreCallback,postPublicProductController,getCategoryAttributesController, mercadolibreResCache ,getMercadoLivreOrdersAll};

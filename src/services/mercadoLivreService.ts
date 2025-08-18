@@ -80,6 +80,27 @@ class getCategoryAttributes {
     }
   }
 }
+
+class getCategoryCategory {
+  async execute() {
+    try {
+      const token: TokenDataResponse = await refreshAccessToken();
+      const response = await axios.get(
+        `https://api.mercadolibre.com/sites/MLB/categories`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+
+      return { error: "Erro ao buscar categorias no Mercado Livre" };
+    }
+  }
+}
 interface Attribute {
   id: string;
   value_id?: string;
@@ -146,11 +167,8 @@ class postPublicProduct {
       return response.data;
 
     } catch (error: any) {
-      console.error(
-        "Erro ao publicar produto:",
-        error.response?.data || error.message
-      );
-      throw new Error("Falha ao publicar produto no Mercado Livre.");
+     
+     return error.response?.data || error.message
     }
   }
 }
@@ -395,6 +413,7 @@ export {
   postPublicProduct,
   searchProductByName,
   getTrends,
+  getCategoryCategory
 };
 
 // "shipping": {

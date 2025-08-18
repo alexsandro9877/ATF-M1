@@ -16,6 +16,7 @@ import {
 } from "../controllers/productController";
 import { addByInventoryProductController, addByInventoryProductMovimentoController, getAllByInventoryProductController, getAllByInventoryProductMovimentoController } from "../controllers/inventoryController";
 import { AddFromFireStoreStoreController, DeleteFromFireStoreController, GetAllFromFireStoreStoreController, UpdateFromFireStoreController } from "../controllers/storeController";
+import { AddFromEmotionServiceWebEmotion, DeleteFromFireStoreEmotionControllerWebEmotion, GetAllFromEmotionServiceWebEmotion, SetFromFireStoreEmotionControllerWebEmotion } from "../controllers/emotionController";
 
 
 export async function publica(app: FastifyInstance) {
@@ -108,6 +109,28 @@ export async function publica(app: FastifyInstance) {
       return new DeleteFromFireStoreController().handle(request, reply);
     }
   );
+
+
+  
+    app.post("/api/emotion", async (request, reply) => {
+      await new AddFromEmotionServiceWebEmotion().handle(request, reply);
+    }); 
+     app.get("/api/emotion", async (request, reply) => {
+      await new GetAllFromEmotionServiceWebEmotion().handle(request, reply);
+    });
+    
+    app.put("/api/emotion", async (request, reply) => {
+      await new SetFromFireStoreEmotionControllerWebEmotion().handle(request, reply);
+    });
+
+    app.delete("/api/emotion/:id", async (request, reply) => {
+      await new DeleteFromFireStoreEmotionControllerWebEmotion().handle(request, reply);
+    });
+  
+  
+  
+
+
 
   // Etapa 2 – Gere uma senha de app
   // Acesse: https://myaccount.google.com/apppasswords
