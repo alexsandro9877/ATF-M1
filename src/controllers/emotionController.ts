@@ -17,7 +17,7 @@ export class GetAllFromEmotionServiceWebEmotion {
 export class DeleteFromFireStoreEmotionControllerWebEmotion {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const service = new DeleteFromFireStoreEmotionService();
-    const  id = request.params as string;
+    const { id } = request.params as { id: string };
     if (!id) {
       reply.status(404).send({ message: "Todos os campos sao necessarios " });
     }
