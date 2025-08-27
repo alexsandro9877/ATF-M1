@@ -11,7 +11,7 @@ import { setToken } from "../lib/tokenCache";
 
 // Executa a cada 1 minuto
 // cron.schedule('* * * * *', async () => {
-cron.schedule("*/60 * * * *", async () => {
+cron.schedule("*/30 * * * *", async () => {
   const ResponseToken = new responseToken();
   console.log("[CRON] Verificando necessidade de refresh do token...");
   await ResponseToken.execute().then((token) => {
